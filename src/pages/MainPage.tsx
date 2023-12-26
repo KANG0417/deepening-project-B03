@@ -1,7 +1,9 @@
-import React from "react";
+import styled from "styled-components";
 
 const MainPages = () => {
-  return <div>MainPages</div>;
+  return <SMainWrapper>MainPages</SMainWrapper>;
 };
 
 export default MainPages;
+
+const SMainWrapper = styled.div``;
