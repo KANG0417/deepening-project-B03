@@ -1,4 +1,5 @@
 export type TMenuButtonProps = {
+  ref: React.MutableRefObject<HTMLButtonElement | null>;
   type: string;
   addStyle?: {
     backgroundImage: string;

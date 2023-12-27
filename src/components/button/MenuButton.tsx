@@ -2,9 +2,11 @@ import styled, { css, keyframes } from "styled-components";
 import { TMenuButtonProps } from "../../types/header";
 
 const MenuButton = (props: TMenuButtonProps) => {
-  const { type, addStyle = {}, onClick } = props;
+  const { ref, type, addStyle = {}, onClick } = props;
 
-  return <SMenuButton type={type} addStyle={addStyle} onClick={onClick} />;
+  return (
+    <SMenuButton ref={ref} type={type} addStyle={addStyle} onClick={onClick} />
+  );
 };
 
 export default MenuButton;

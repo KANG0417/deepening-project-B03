@@ -4,11 +4,12 @@ import MenuButton from "../button/MenuButton";
 import UserIcon from "../../assets/icons/userIcon.png";
 import topChvronIcon from "../../assets/icons/topChevronIcon.png";
 import bottomChvronIcon from "../../assets/icons/bottomChevronIcon.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const UserMenuDropDown = (props: TDropDownProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const { options, onOptionClick } = props;
+  const dropMenuRef = useRef<HTMLButtonElement | null>(null);
   const topDropDown = isExpanded;
   const bottomDropDown = !isExpanded;
 
@@ -16,9 +17,18 @@ const UserMenuDropDown = (props: TDropDownProps) => {
     setIsExpanded(!isExpanded);
   };
 
+  useEffect(() => {
+    const handleOutsideClose = (event: { target: any }) => {
+      if (isExpanded && !dropMenuRef.current?.contains(event.target))
+        setIsExpanded(!isExpanded);
+    };
+    document.addEventListener("click", handleOutsideClose);
+  }, [isExpanded]);
+
   return (
     <>
       <MenuButton
+        ref={dropMenuRef}
         type={"button"}
         addStyle={{ backgroundImage: `url(${UserIcon})` }}
         onClick={handleDropDownClick}
