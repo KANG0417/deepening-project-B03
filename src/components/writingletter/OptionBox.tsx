@@ -1,9 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
+
+import "react-datepicker/dist/react-datepicker.css";
+import Calendar from "./Calendar";
+
 const OptionBox = () => {
   return (
     <SOptionBox>
-      <SPublicButton>도착날짜선택</SPublicButton>
+      <Calendar />
       <h3>공개/비공개</h3>
       <SPublicButton>공개</SPublicButton>
       <SPublicButton>익명으로 공개</SPublicButton>
