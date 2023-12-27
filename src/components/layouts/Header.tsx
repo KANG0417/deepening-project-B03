@@ -16,6 +16,15 @@ const Header = () => {
     navigate("/");
   };
 
+  const onOptionClick = (option: string) => {
+    if (option === "마이페이지") {
+      navigate("/write");
+    }
+    if (option === "로그아웃") {
+      alert("로그아웃");
+    }
+  };
+
   return (
     <SHeaderWrapper>
       <SHeaderContainer>
@@ -29,7 +38,10 @@ const Header = () => {
             />
           </li>
           <li>
-            <UserMenuDropDown />
+            <UserMenuDropDown
+              options={["마이페이지", "로그아웃"]}
+              onOptionClick={(option) => onOptionClick(option)}
+            />
           </li>
         </SMenuBar>
       </SHeaderContainer>

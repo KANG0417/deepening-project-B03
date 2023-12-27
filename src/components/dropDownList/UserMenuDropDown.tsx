@@ -17,7 +17,7 @@ const UserMenuDropDown = (props: TDropDownProps) => {
   };
 
   return (
-    <SDropDownContainer>
+    <>
       <MenuButton
         type={"button"}
         addStyle={{ backgroundImage: `url(${UserIcon})` }}
@@ -28,15 +28,23 @@ const UserMenuDropDown = (props: TDropDownProps) => {
         <img src={`${bottomChvronIcon}`} alt="아래쪽화살표아이콘" />
       )}
       {isExpanded && (
-        <SDropDownList>
-          {options.map((option) => (
-            <li onClick={() => onOptionClick(option)} key={option}>
-              {option}
-            </li>
-          ))}
-        </SDropDownList>
+        <SDropDownContainer>
+          <SDropDownList>
+            {options.map((option) => (
+              <li
+                onClick={() => {
+                  setIsExpanded(false);
+                  onOptionClick(option);
+                }}
+                key={option}
+              >
+                {option}
+              </li>
+            ))}
+          </SDropDownList>
+        </SDropDownContainer>
       )}
-    </SDropDownContainer>
+    </>
   );
 };
 

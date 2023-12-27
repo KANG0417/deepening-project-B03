@@ -9,5 +9,5 @@ export type TMenuButtonProps = {
 
 export type TDropDownProps = {
   options: string[];
-  onOptionClick: () => void;
+  onOptionClick: (option: string) => void;
 };
