@@ -1,19 +1,20 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Router from "./shared/Router";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function App() {
   const auth = getAuth();
-  const navigate = useNavigate();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-      navigate("/login");
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      } else {
+        localStorage.removeItem("user");
+        window.location.href = "localhost:3000/login";
+      }
+    });
+  }, []);
 
   return <Router />;
 }
