@@ -1,14 +1,21 @@
-// App.js
-import { useState, ChangeEvent, FormEvent } from "react";
-import { JoinPageProps } from "../type/joinPage";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebase.config";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 
-const JoinPage = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string | null>(null);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (user !== null) {
+      setDisplayName(user.displayName || null);
+    }
+  }, [user]);
+
+  const handleClickOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
     } = event;
@@ -20,24 +27,20 @@ const JoinPage = () => {
     }
   };
 
-  const signUp = (event: FormEvent) => {
-    console.log("여인준");
+  const handleClickSignIn = async (event: FormEvent) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // 회원가입 성공시
-        console.log(userCredential);
-      })
-      .catch((error) => {
-        // 회원가입 실패시
-        console.error(error);
-      });
-  };
-  const signIn = (event: FormEvent) => {
-    event.preventDefault();
-  };
-  const logOut = (event: FormEvent) => {
-    event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      console.log(userCredential);
+      console.log("로그인완료");
+      alert(`${displayName}님 안녕하세요`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -50,7 +53,7 @@ const JoinPage = () => {
             type="email"
             value={email}
             name="email"
-            onChange={onChange}
+            onChange={handleClickOnChange}
             required
           ></input>
         </div>
@@ -60,16 +63,15 @@ const JoinPage = () => {
             type="password"
             value={password}
             name="password"
-            onChange={onChange}
+            onChange={handleClickOnChange}
             required
           ></input>
         </div>
-        <button onClick={signUp}>회원가입</button>
-        <button onClick={signIn}>로그인</button>
-        <button onClick={logOut}>로그아웃</button>
+
+        <button onClick={handleClickSignIn}>로그인</button>
       </form>
     </div>
   );
 };
 
-export default JoinPage;
+export default LoginPage;
