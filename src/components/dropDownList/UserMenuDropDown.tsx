@@ -35,13 +35,15 @@ const UserMenuDropDown = () => {
     return () => document.removeEventListener("click", handleOutsideClose);
   }, [isExpanded]);
 
-  const onOptionClick = (options: string) => {
-    if (options === MYPAGE) {
-      navigate("/write");
-    }
-    if (options === LOGOUT) {
-      auth.signOut();
-      navigate("/login");
+  const onOptionClick = async (option: string) => {
+    switch (option) {
+      case MYPAGE:
+        return navigate("/write");
+      case LOGOUT:
+        return await auth.signOut();
+      default:
+        alert("관리자에게 문의하세요");
+        break;
     }
   };
 
