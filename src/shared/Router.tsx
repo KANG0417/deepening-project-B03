@@ -6,6 +6,7 @@ import LayoutPage from "../pages/LayoutPage";
 import LoginPage from "../pages/LoginPage";
 import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
+import MyPage from "../pages/MyPage";
 import LetterDetailPage from "../pages/LetterDetailPage";
 
 const Router = () => {
@@ -18,12 +19,12 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
+            <Route path="/My" element={<MyPage />} />
           </Route>
           {/* ReadLetterPage : 임시경로 */}
           <Route path="/letterDetail" element={<LetterDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
-
         </Routes>
       </BrowserRouter>
     </>
