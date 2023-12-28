@@ -7,6 +7,8 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const JoinPage = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
@@ -62,15 +64,37 @@ const JoinPage = () => {
       collection(db, "users"),
       where("email", "==", email),
     );
+    console.log("emailQuery", emailQuery);
+
     const emailSnapshot = await getDocs(emailQuery);
-    console.log(emailQuery);
-    if (!emailQuery) {
+    console.log("emailSnapshot", emailSnapshot.docs);
+    console.log("이거이거", emailSnapshot.empty);
+
+    if (!emailSnapshot.empty) {
       alert("이미 사용 중인 이메일입니다");
       console.log("사용중임");
+      window.location.reload();
+      return false;
+    } else {
+      console.log("이메일 사용 가능");
+    }
+
+    // 닉네임 중복 확인
+    const displayNameQuery = query(
+      collection(db, "users"),
+      where("displayName", "==", displayName),
+    );
+
+    const displayNameSnapshot = await getDocs(displayNameQuery);
+
+    if (!displayNameSnapshot.empty) {
+      alert("이미 사용 중인 닉네임입니다");
+      window.location.reload();
       return false;
     }
 
     try {
+      // 회원가입 후 Firestore 데이터베이스에 사용자 정보 추가
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -78,6 +102,7 @@ const JoinPage = () => {
       );
       const user = userCredential.user;
 
+      // Firestore 데이터베이스에 사용자 정보 추가
       await addDoc(collection(db, "users"), {
         userUid: user.uid,
         email,
@@ -89,9 +114,10 @@ const JoinPage = () => {
       await updateProfile(user, {
         displayName: displayName,
       });
-      console.log(userCredential);
+
       console.log("회원가입 완료");
       alert(`${displayName}님 환영합니다`);
+      navigate("/");
     } catch (error) {
       console.error("회원가입 실패", error);
     }
