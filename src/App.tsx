@@ -1,3 +1,4 @@
+
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Router from "./shared/Router";
 import { useEffect } from "react";

@@ -4,7 +4,9 @@ import { TMenuButtonProps } from "../../types/header";
 const MenuButton = (props: TMenuButtonProps) => {
   const { type, addStyle = {}, onClick } = props;
 
+
   return <SMenuButton type={type} $addStyle={addStyle} onClick={onClick} />;
+
 };
 
 export default MenuButton;
@@ -39,6 +41,7 @@ const SMenuButton = styled.button<any>`
   ${(props) => {
     return css`
       background-image: ${props.$addStyle.backgroundImage};
+
     `;
   }};
   &:hover {

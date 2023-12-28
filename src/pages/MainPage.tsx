@@ -4,6 +4,7 @@ import styled from "styled-components";
 const MainPages = () => {
   getDocs();
 
+
   return (
     <SMainWrapper>
       <ul>
@@ -13,12 +14,20 @@ const MainPages = () => {
       </ul>
       <SLetterList>
         <li>제목: </li>
+
+        <li>내용: </li>
+        <li>태그: </li>
+        <li>좋아요: 123</li>
+
       </SLetterList>
     </SMainWrapper>
   );
 };
 
 export default MainPages;
+
+
+const SMainWrapper = styled.div``;
 
 const SMainWrapper = styled.div`
   font-size: 2.5rem;
