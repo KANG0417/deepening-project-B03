@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import MenuButton from "../button/MenuButton";
 import WriteIcon from "../../assets/icons/writingIcon.png";
-
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import UserMenuDropDown from "../dropDownList/UserMenuDropDown";
 
 const Header = () => {
@@ -14,15 +13,6 @@ const Header = () => {
 
   const handleGoToHomeClick = () => {
     navigate("/");
-  };
-
-  const onOptionClick = (option: string) => {
-    if (option === "마이페이지") {
-      navigate("/write");
-    }
-    if (option === "로그아웃") {
-      alert("로그아웃");
-    }
   };
 
   return (
@@ -38,10 +28,7 @@ const Header = () => {
             />
           </li>
           <li>
-            <UserMenuDropDown
-              options={["마이페이지", "로그아웃"]}
-              onOptionClick={(option) => onOptionClick(option)}
-            />
+            <UserMenuDropDown />
           </li>
         </SMenuBar>
       </SHeaderContainer>

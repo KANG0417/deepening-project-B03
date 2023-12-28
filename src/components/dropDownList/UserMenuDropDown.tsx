@@ -1,46 +1,63 @@
 import styled from "styled-components";
-import { TDropDownProps } from "../../types/header";
 import MenuButton from "../button/MenuButton";
 import UserIcon from "../../assets/icons/userIcon.png";
 import topChvronIcon from "../../assets/icons/topChevronIcon.png";
 import bottomChvronIcon from "../../assets/icons/bottomChevronIcon.png";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/firebase.config";
 
-const UserMenuDropDown = (props: TDropDownProps) => {
+const MYPAGE = "마이페이지";
+const LOGOUT = "로그아웃";
+const OPTIONS = [MYPAGE, LOGOUT];
+
+const UserMenuDropDown = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { options, onOptionClick } = props;
-  const dropMenuRef = useRef<HTMLButtonElement | null>(null);
-  const topDropDown = isExpanded;
-  const bottomDropDown = !isExpanded;
+  const dropMenuRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   const handleDropDownClick = () => {
     setIsExpanded(!isExpanded);
   };
 
   useEffect(() => {
-    const handleOutsideClose = (event: { target: any }) => {
-      if (isExpanded && !dropMenuRef.current?.contains(event.target))
-        setIsExpanded(!isExpanded);
+    const handleOutsideClose = (event: any) => {
+      if (
+        isExpanded &&
+        dropMenuRef.current &&
+        !dropMenuRef.current.contains(event.target)
+      ) {
+        console.log(event.target, event.currentTarget, dropMenuRef.current);
+        setIsExpanded(false);
+      }
     };
     document.addEventListener("click", handleOutsideClose);
+    return () => document.removeEventListener("click", handleOutsideClose);
   }, [isExpanded]);
+
+  const onOptionClick = (options: string) => {
+    if (options === MYPAGE) {
+      navigate("/write");
+    }
+    if (options === LOGOUT) {
+      auth.signOut();
+      navigate("/login");
+    }
+  };
 
   return (
     <>
-      <MenuButton
-        ref={dropMenuRef}
-        type={"button"}
-        addStyle={{ backgroundImage: `url(${UserIcon})` }}
-        onClick={handleDropDownClick}
-      />
-      {topDropDown && <img src={`${topChvronIcon}`} alt="위쪽화살표아이콘" />}
-      {bottomDropDown && (
-        <img src={`${bottomChvronIcon}`} alt="아래쪽화살표아이콘" />
-      )}
+      <SMenuContainer onClick={handleDropDownClick} ref={dropMenuRef}>
+        <MenuButton
+          type={"button"}
+          addStyle={{ backgroundImage: `url(${UserIcon})` }}
+        />
+        <img src={isExpanded ? topChvronIcon : bottomChvronIcon} alt="화살표" />
+      </SMenuContainer>
       {isExpanded && (
         <SDropDownContainer>
           <SDropDownList>
-            {options.map((option) => (
+            {OPTIONS.map((option) => (
               <li
                 onClick={() => {
                   setIsExpanded(false);
@@ -59,6 +76,10 @@ const UserMenuDropDown = (props: TDropDownProps) => {
 };
 
 export default UserMenuDropDown;
+
+const SMenuContainer = styled.div`
+  cursor: pointer;
+`;
 
 const SDropDownContainer = styled.div`
   position: absolute;
