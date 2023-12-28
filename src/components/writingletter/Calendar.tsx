@@ -1,18 +1,29 @@
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
 
-const Calendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+interface CalendarProps {
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ setSelectedDate }) => {
+  const [selectedDate, setSelectedDateLocal] = useState<Date | null>(
+    new Date(),
+  );
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDateLocal(date);
+    setSelectedDate(date); // 부모 컴포넌트로 선택된 날짜 전달
+  };
 
   return (
     <DatePicker
-      dateFormat="yyyy.MM.dd" // 날짜 형태
-      shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
-      minDate={new Date("2000-01-01")} // minDate 이전 날짜 선택 불가
-      maxDate={new Date()} // maxDate 이후 날짜 선택 불가
+      dateFormat="yyyy.MM.dd"
+      shouldCloseOnSelect
+      minDate={new Date("2024-01-01")}
+      maxDate={new Date("2024-12-31")}
       selected={selectedDate}
-      onChange={(date) => setSelectedDate(date)}
+      onChange={handleDateChange}
     />
   );
 };

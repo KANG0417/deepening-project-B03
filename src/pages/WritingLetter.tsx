@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import WritingField from "../components/writingletter/WritingField";
 import OptionBox from "../components/writingletter/OptionBox";
+import { useState } from "react";
 const WritingLetter = () => {
   return (
     <>

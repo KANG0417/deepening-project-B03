@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 const WritingField = () => {
-  return <STextArea placeholder="글을 작성해주세요(1000자 제한)" />;
+  const [letterIndex, setLetterIndex] = useState<string>("");
+
+  const LetterIndexHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLetterIndex(e.target.value);
+    console.log(letterIndex);
+  };
+
+  return (
+    <STextArea
+      onChange={LetterIndexHandler}
+      placeholder="글을 작성해주세요(1000자 제한)"
+    />
+  );
 };
 
 const STextArea = styled.textarea`
