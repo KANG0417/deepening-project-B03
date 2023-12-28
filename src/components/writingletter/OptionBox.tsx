@@ -6,6 +6,7 @@ import Calendar from "./Calendar";
 const OptionBox = () => {
   const [isSendImmediate, setIsSendImmediate] = useState<boolean>(true);
   const [isImmediate, setIsImmediate] = useState<boolean>(true);
+  const [inputText, setInputText] = useState<string>("");
 
   //바로보내기 or 예약보내기 버튼 활성화
   const SendToggleButton = (isSendImmediate: boolean) => {
@@ -16,31 +17,46 @@ const OptionBox = () => {
     setIsImmediate(isImmediate);
   };
 
+  const inputTextHandler = (e: any) => {
+    setInputText(e.target.value);
+    console.log(inputText);
+  };
   return (
-    <SOptionBox>
-      <SPublicButton
-        onClick={() => SendToggleButton(true)}
-        active={isSendImmediate}
-      >
-        바로보내기
-      </SPublicButton>
-      <SPublicButton
-        onClick={() => SendToggleButton(false)}
-        active={!isSendImmediate}
-      >
-        예약보내기
-      </SPublicButton>
-      {isSendImmediate ? null : <Calendar />}
-      <h3>공개/비공개</h3>
-      <SPublicButton onClick={() => ToggleButton(true)} active={isImmediate}>
-        공개
-      </SPublicButton>
-      <SPublicButton onClick={() => ToggleButton(false)} active={!isImmediate}>
-        익명으로 공개
-      </SPublicButton>
-      <h3>발신할 곳</h3>
-      <input placeholder="보낼곳을 적어주세요" />
-    </SOptionBox>
+    <>
+      <SOptionBox>
+        <SPublicButton
+          onClick={() => SendToggleButton(true)}
+          active={isSendImmediate}
+        >
+          바로보내기
+        </SPublicButton>
+        <SPublicButton
+          onClick={() => SendToggleButton(false)}
+          active={!isSendImmediate}
+        >
+          예약보내기
+        </SPublicButton>
+        {isSendImmediate ? null : <Calendar />}
+        <h3>공개/비공개</h3>
+        <SPublicButton onClick={() => ToggleButton(true)} active={isImmediate}>
+          공개
+        </SPublicButton>
+        <SPublicButton
+          onClick={() => ToggleButton(false)}
+          active={!isImmediate}
+        >
+          익명으로 공개
+        </SPublicButton>
+        <div>
+          <h3>발신할 곳</h3>
+          <input
+            onChange={inputTextHandler}
+            placeholder="보낼곳을 적어주세요"
+          />
+        </div>
+        <SSendButton>보내기</SSendButton>
+      </SOptionBox>
+    </>
   );
 };
 
@@ -56,4 +72,8 @@ const SPublicButton = styled.button<{ active: boolean }>`
   color: ${(props) => (props.active ? "#fff" : "#000")};
 `;
 
+const SSendButton = styled.button`
+  border: 0.1px solid;
+  width: 10vw;
+`;
 export default OptionBox;
