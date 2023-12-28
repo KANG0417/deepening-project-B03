@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 const MainPages = () => {
-  
-
   return (
     <SMainWrapper>
       <ul>
@@ -15,6 +13,58 @@ const MainPages = () => {
         <li>내용: </li>
         <li>태그: </li>
         <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
+        <li>좋아요: 123</li>
       </SLetterList>
     </SMainWrapper>
   );
@@ -22,6 +72,10 @@ const MainPages = () => {
 
 export default MainPages;
 
-const SMainWrapper = styled.div``;
+const SMainWrapper = styled.div`
+  font-size: 2.5rem;
+  border: 1px solid black;
+  margin: 0 auto 5rem auto;
+`;
 
 const SLetterList = styled.ul``;
