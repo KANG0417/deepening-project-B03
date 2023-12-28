@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import LetterCommentList from "../components/comment/LetterCommentList";
+import CommentForm from "../components/comment/CommentForm";
 
 const LetterDetailPage = () => {
   return (
@@ -22,10 +24,12 @@ const LetterDetailPage = () => {
         <div>10년뒤 안나에게 어쩌구저쩌구 내용들</div>
       </SLetterContent>
       <SLikeCommentShare>
-        <span>💙좋아요</span>
-        <span>✍댓글</span>
-        <span>🛫공유</span>
+        <button>💙좋아요</button>
+        <button>✍댓글</button>
+        <button>🛫공유</button>
       </SLikeCommentShare>
+      <LetterCommentList />
+      <CommentForm />
     </SContainer>
   );
 };
@@ -38,15 +42,19 @@ const SContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75%;
-  margin: 40px 0;
+  width: 100%;
+  height: 700px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 `;
 
 const SBackButton = styled.div`
   width: 50px;
   height: 50px;
+  margin-right: auto;
   button {
-    background: transparent;
+    float: left;
+    align-content: left;
     width: 5.5rem;
     height: 5.5rem;
     color: black;
@@ -56,17 +64,40 @@ const SBackButton = styled.div`
 `;
 
 const SLetterTitle = styled.div`
-  border: 1px solid black;
-  width: 300px;
+  border: 2px solid lightpink;
+  width: 60%;
+  font-size: 25px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    margin: auto;
+  }
 `;
 const SDate = styled.div`
-  border: 1px solid black;
   div {
+    border: 2px solid lightblue;
+  }
+  span {
+    padding: 0.5rem;
+    border: 2px solid lightblue;
   }
 `;
 const SLetterContent = styled.div`
-  border: 1px solid black;
+  border: 2px solid purple;
+  width: 60%;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    margin: auto;
+  }
 `;
 const SLikeCommentShare = styled.div`
-  border: 1px solid black;
+  button {
+    border: 2px solid lightcoral;
+  }
 `;
