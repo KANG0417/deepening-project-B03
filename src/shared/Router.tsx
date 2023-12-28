@@ -6,6 +6,7 @@ import LayoutPage from "../pages/LayoutPage";
 import LoginPage from "../pages/LoginPage";
 import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
+import MyPage from "../pages/MyPage";
 
 const Router = () => {
   return (
@@ -17,9 +18,11 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
+            <Route path="/My" element={<MyPage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
+          
         </Routes>
       </BrowserRouter>
     </>
