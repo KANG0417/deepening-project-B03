@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styled from "styled-components";
-import logo from "../assets/logo.png";
+import logo from "../assets/logos/logo.png";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -127,7 +127,11 @@ const JoinPage = () => {
 
   return (
     <SJoinPageWrapper>
-      <SJoinPageLogo />
+      <SJoinPageLogo
+        onClick={() => {
+          navigate("/");
+        }}
+      />
       <SJoinPageSecondWrapper>
         <SJoinPageTitle>회원가입</SJoinPageTitle>
         <SJoinPageForm>
@@ -211,6 +215,7 @@ const SJoinPageLogo = styled.div`
   height: 60px;
   flex-shrink: 0;
   margin: 30px;
+  cursor: pointer;
 `;
 
 const SJoinPageTitle = styled.h2`
