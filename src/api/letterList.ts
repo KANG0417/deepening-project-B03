@@ -26,7 +26,7 @@ export const getLetters = async () => {
 
 export const getLetter = async (id: string) => {
   const querySnapshot = await getDoc(doc(db, "letters", id));
-  return querySnapshot;
+  return querySnapshot.data();
 };
 
 export const updateLetter = async (

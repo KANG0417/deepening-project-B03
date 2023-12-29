@@ -26,7 +26,7 @@ export const getComments = async () => {
 
 export const getComment = async (id: string) => {
   const querySnapshot = await getDoc(doc(db, "comments", id));
-  return querySnapshot;
+  return querySnapshot.data();
 };
 
 export const updateComment = async (

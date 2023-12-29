@@ -15,7 +15,7 @@ export const addLetter = async (newUser: TAddUserProps[]) => {
 
 export const getLetter = async (id: string) => {
   const querySnapshot = await getDoc(doc(db, "users", id));
-  return querySnapshot;
+  return querySnapshot.data();
 };
 
 export const updateUser = async (id: string, setUser: TUpdateUserProps[]) => {
