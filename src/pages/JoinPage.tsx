@@ -14,6 +14,9 @@ const JoinPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [displayNameError, setDisplayNameError] = useState<string>("");
 
   const handleClickOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -30,10 +33,19 @@ const JoinPage = () => {
     }
   };
 
-  const handleClickSignUp = async (event: FormEvent) => {
-    event.preventDefault();
-    console.log("test");
-    const nowDate = dayjs().format("YY년 MM월 DD일 HH:mm:ss");
+  const handleBlur = (event: ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name },
+    } = event;
+
+    // 에러 메시지 초기화
+    if (name === "email") {
+      setEmailError("");
+    } else if (name === "password") {
+      setPasswordError("");
+    } else if (name === "displayName") {
+      setDisplayNameError("");
+    }
 
     // 이메일 형식이 아닌 경우
     const emailRegEx =
@@ -41,7 +53,7 @@ const JoinPage = () => {
     const isEmailValid = emailRegEx.test(email);
 
     if (!isEmailValid) {
-      alert("유효하지 않은 이메일 형식입니다");
+      setEmailError("유효하지 않은 이메일 형식입니다");
       return false;
     }
 
@@ -49,7 +61,7 @@ const JoinPage = () => {
     const isPasswordValid = password.length >= 5;
 
     if (!isPasswordValid) {
-      alert("비밀번호는 6자 이상 사용해야 합니다");
+      setPasswordError("비밀번호는 6자 이상 사용해야 합니다");
       return false;
     }
 
@@ -57,9 +69,15 @@ const JoinPage = () => {
     const isNicknameValid = displayName.length > 1 && displayName.length <= 10;
 
     if (!isNicknameValid) {
-      alert("닉네임은 2자 이상 10자 이하로 설정해야 합니다");
+      setDisplayNameError("닉네임은 2자 이상 10자 이하로 설정해야 합니다");
       return false;
     }
+  };
+
+  const handleClickSignUp = async (event: FormEvent) => {
+    event.preventDefault();
+    console.log("test");
+    const nowDate = dayjs().format("YY년 MM월 DD일 HH:mm:ss");
 
     // 이메일 중복 확인
     const emailQuery = query(
@@ -143,8 +161,11 @@ const JoinPage = () => {
               name="email"
               onChange={handleClickOnChange}
               required
+              placeholder="example@zum.com"
+              onBlur={handleBlur}
             ></input>
           </SJoinPageInputWrapper>
+          {emailError && <SErrorMessage>{emailError}</SErrorMessage>}
           <SJoinPageInputWrapper>
             <label>비밀번호</label>
             <input
@@ -153,8 +174,11 @@ const JoinPage = () => {
               name="password"
               onChange={handleClickOnChange}
               required
+              placeholder="영문 + 숫자 조합으로 6자 이상 입력해주세요 :)"
+              onBlur={handleBlur}
             ></input>
           </SJoinPageInputWrapper>
+          {passwordError && <SErrorMessage>{passwordError}</SErrorMessage>}
           <SJoinPageInputWrapper>
             <label>닉네임</label>
             <input
@@ -163,8 +187,13 @@ const JoinPage = () => {
               name="displayName"
               onChange={handleClickOnChange}
               required
+              placeholder="2자 이상 10자 이하로 설정해주세요 :)"
+              onBlur={handleBlur}
             ></input>
           </SJoinPageInputWrapper>
+          {displayNameError && (
+            <SErrorMessage>{displayNameError}</SErrorMessage>
+          )}
           <SJoinPageJoinButton onClick={handleClickSignUp}>
             회원가입
           </SJoinPageJoinButton>
@@ -228,6 +257,8 @@ const SJoinPageForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 30px;
 `;
 
 const SJoinPageInputWrapper = styled.div`
@@ -251,7 +282,10 @@ const SJoinPageInputWrapper = styled.div`
     height: 60px;
     flex-shrink: 0;
     padding-left: 20px;
-    margin-bottom: 36px;
+    /* margin-bottom: 36px; */
+  }
+  input::placeholder {
+    color: #e2e2e2;
   }
 `;
 
@@ -269,7 +303,17 @@ const SJoinPageJoinButton = styled.button`
 
 const SJoinpageLoginButton = styled.button`
   font-family: Pretendard;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 16px;
   color: #b1b1b1;
+  width: 100px;
+`;
+
+const SErrorMessage = styled.div`
+  color: #ff6d6d;
+  font-size: 14px;
+  margin-top: -22px;
+  margin-bottom: -22px;
+  font-family: Pretendard;
+  width: 100%;
 `;
