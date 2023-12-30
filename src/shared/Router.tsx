@@ -8,6 +8,7 @@ import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
 import MyPage from "../pages/MyPage";
 import LetterDetailPage from "../pages/LetterDetailPage";
+import WritingLetter from "../pages/WritingLetter";
 
 const Router = () => {
   return (
@@ -19,7 +20,8 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
-            <Route path="/My" element={<MyPage />} />
+            <Route path="/my" element={<MyPage />} />
+            <Route path="/writingLetter" element={<WritingLetter />} />
           </Route>
           {/* ReadLetterPage : 임시경로 */}
           <Route path="/letterDetail" element={<LetterDetailPage />} />

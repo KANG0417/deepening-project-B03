@@ -18,7 +18,6 @@ const MainPages = () => {
         <li>내용: </li>
         <li>태그: </li>
         <li>좋아요: 123</li>
-
       </SLetterList>
     </SMainWrapper>
   );
@@ -27,6 +26,10 @@ const MainPages = () => {
 export default MainPages;
 
 
+
+
+
+// const SMainWrapper = styled.div``;
 
 
 const SMainWrapper = styled.div`
