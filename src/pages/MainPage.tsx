@@ -2,7 +2,7 @@ import { getDocs } from "firebase/firestore";
 import styled from "styled-components";
 
 const MainPages = () => {
-  getDocs();
+  // getDocs();
 
 
   return (
@@ -27,7 +27,7 @@ const MainPages = () => {
 export default MainPages;
 
 
-const SMainWrapper = styled.div``;
+
 
 const SMainWrapper = styled.div`
   font-size: 2.5rem;
