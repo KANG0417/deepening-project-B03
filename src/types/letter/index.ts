@@ -7,7 +7,7 @@ export type TUpdateLetterProps = {
 };
 
 export type TAddLetterProps = {
-  letterId: string;
+  letterId?: string;
   createAt: string;
   displayName: string;
   userUid: string;

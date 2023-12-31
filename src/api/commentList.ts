@@ -1,9 +1,12 @@
 import {
+  OrderByDirection,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
+  orderBy,
+  query,
   setDoc,
   updateDoc,
 } from "@firebase/firestore";
@@ -15,13 +18,23 @@ export const addComment = async (newComment: TAddCommentProps[]) => {
   await setDoc(newDocRef, { ...newComment, commentId: newDocRef.id });
 };
 
-export const getComments = async () => {
-  const querySnapshot = await getDocs(collection(db, "comments"));
+export const getComments = async (): Promise<TAddCommentProps[]> => {
+  const letterRef = collection(db, "comments");
+  const q = query(letterRef, orderBy("createAt", "desc"));
+  const querySnapshot = await getDocs(q);
 
-  return querySnapshot.docs.map((doc) => ({
-    commentId: doc.id,
-    ...doc.data(),
-  }));
+  const data: TAddCommentProps[] = querySnapshot.docs.map((doc) => {
+    const docData = doc.data();
+    return {
+      commentId: docData.commentId,
+      userUid: docData.userUid,
+      displayName: docData.displayName,
+      commentContent: docData.commentContent,
+      createAt: docData.createAt,
+    };
+  });
+
+  return data;
 };
 
 export const getComment = async (id: string) => {

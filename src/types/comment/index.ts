@@ -1,4 +1,5 @@
 export type TAddCommentProps = {
+  commentId?: string;
   userUid: string;
   displayName: string;
   commentContent: string;
