@@ -25,7 +25,7 @@ const FieldContainer = styled.div`
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 20px;
-  width: 90%;
+  width: 75%;
   height: 90%;
   margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

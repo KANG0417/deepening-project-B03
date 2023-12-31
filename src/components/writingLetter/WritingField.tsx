@@ -26,6 +26,8 @@ const WritingField = ({
 const STextArea = styled.textarea`
   width: 55%;
   height: 60vh;
+  border: 1px solid;
+  border-radius: 5px;
   resize: none;
 `;
 
