@@ -1,30 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import WritingField from "../components/writingLetter/WritingField";
 import OptionBox from "../components/writingLetter/OptionBox";
 
 const WritingLetter = () => {
+  const [letterIndex, setLetterIndex] = useState<string>("");
+
+  // WritingField에서 편지내용 전달 텍스트
+  const handleLetterIndexChange = (text: string): void => {
+    setLetterIndex(text);
+  };
+
   return (
     <>
       <FieldContainer>
-        <WritingField
-          onLetterIndexChange={function (text: string): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-        <OptionBox />
+        <WritingField onLetterIndexChange={handleLetterIndexChange} />
+        <OptionBox letterIndex={letterIndex} />
       </FieldContainer>
     </>
   );
 };
 
 const FieldContainer = styled.div`
-  background-color: #fff; /* Set a white background */
-  border: 1px solid #ddd; /* Add a border for a paper-like appearance */
-  padding: 20px; /* Add some padding */
-  width: 50%; /* Adjust the width as needed */
-  margin: 20px auto; /* Center the letter on the page */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 90%;
+  height: 90%;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   gap: 10vw;
 `;

@@ -9,11 +9,10 @@ const WritingField = ({
   const [letterIndex, setLetterIndex] = useState<string>("");
 
   const LetterIndexHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLetterIndex(e.target.value);
-    onLetterIndexChange(e.target.value);
-    console.log(letterIndex);
+    const newText = e.target.value;
+    setLetterIndex(newText);
+    onLetterIndexChange(newText); // 변경된 텍스트를 부모 컴포넌트로 전달
   };
-
   return (
     <>
       <STextArea
@@ -25,7 +24,7 @@ const WritingField = ({
 };
 
 const STextArea = styled.textarea`
-  width: 30%;
+  width: 55%;
   height: 60vh;
   resize: none;
 `;
