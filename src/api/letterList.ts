@@ -20,26 +20,15 @@ export const addLetter = async (newLetter: TAddLetterProps) => {
   await setDoc(newDocRef, { ...newLetter, letterId: newDocRef.id });
 };
 
-export const getLetters = async (
+export const getFirstLetters = async (
   letterSort: OrderByDirection,
 ): Promise<TAddLetterProps[]> => {
   const letterRef = collection(db, "letters");
-  const q = query(letterRef, orderBy("createAt", letterSort));
+
+  const q = query(letterRef, orderBy("createAt", letterSort), limit(5));
+
   const querySnapshot = await getDocs(q);
-
-  // Get the last visible document
-  // const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-  // console.log("last", lastVisible);
-
-  // Construct a new query starting at this document,
-  // get the next 25 cities.
-  // const next = query(
-  //   collection(db, "cities"),
-  //   orderBy("population"),
-  //   startAfter(lastVisible),
-  //   limit(25),
-  // );
-
+  // return querySnapshot;
   const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
     const docData = doc.data();
     return {
@@ -56,6 +45,70 @@ export const getLetters = async (
   });
 
   return data;
+};
+
+export const getPage = async (querySnapshot: any) => {
+  return querySnapshot.docs[querySnapshot.docs.length - 1];
+};
+
+export const getData = (docs: any) => {
+  // console.log(docs);
+  const data: TAddLetterProps[] = docs.map((doc: any) => {
+    console.log(doc);
+    const docData = doc.data();
+    return {
+      letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
+      createAt: docData.createAt,
+      displayName: docData.displayName,
+      userUid: docData.userUid,
+      letterTitle: docData.letterTitle,
+      letterContent: docData.letterContent,
+      letterCategory: docData.letterCategory,
+      letterMod: docData.letterMod,
+      selectDate: docData.selectDate,
+    };
+  });
+
+  return data;
+};
+
+export const getNextLetters = async (
+  letterSort: OrderByDirection,
+  pageParam: any,
+) => {
+  const letterRef = collection(db, "letters");
+  const q = pageParam
+    ? query(
+        letterRef,
+        orderBy("createAt", letterSort),
+        startAfter(pageParam),
+        limit(5),
+      )
+    : query(letterRef, orderBy("createAt", letterSort), limit(5));
+  const querySnapshot = await getDocs(q);
+
+  return querySnapshot.docs;
+
+  // getPage()
+  // console.log("last :: ", querySnapshot.docs[querySnapshot.docs.length - 1]);
+
+  // getData()
+  // const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
+  //   const docData = doc.data();
+  //   return {
+  //     letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
+  //     createAt: docData.createAt,
+  //     displayName: docData.displayName,
+  //     userUid: docData.userUid,
+  //     letterTitle: docData.letterTitle,
+  //     letterContent: docData.letterContent,
+  //     letterCategory: docData.letterCategory,
+  //     letterMod: docData.letterMod,
+  //     selectDate: docData.selectDate,
+  //   };
+  // });
+
+  // return data;
 };
 
 export const getLetter = async (id: string) => {
