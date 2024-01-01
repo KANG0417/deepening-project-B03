@@ -10,6 +10,8 @@ const queryClicent = new QueryClient({
     queries: {},
   },
 });
+// let persistor = persi;
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );

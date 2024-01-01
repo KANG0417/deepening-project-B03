@@ -56,68 +56,6 @@ const MainPages = () => {
   });
 
   // 정렬 분기처리
-  // const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-  //   queryKey: ["letters", sort],
-  //   queryFn: async ({ pageParam }) => {
-  //     // const lastLetterId = pageParam;
-  //     // const query = getQuery(lastLetterId, "desc");
-  //     // const documentSnapshots = await getDocs(query);
-  //     // const documentSnapshots = getFirstLetters(sort);
-
-  //     // const letters = documentSnapshots.docs.map((doc) => ({
-  //     //   ...doc.data(),
-  //     //   id: doc.id,
-  //     // }));
-  //     // return letters;
-  //     const letterRef = collection(db, "letters");
-
-  //     const q = lastPage
-  //       ? query(
-  //           letterRef,
-  //           orderBy("createAt", sort),
-  //           startAfter(lastPage),
-  //           limit(5),
-  //         )
-  //       : query(letterRef, orderBy("createAt", sort), limit(5));
-  //     const querySnapshot = await getDocs(q);
-  //     // console.log(querySnapshot.docs[querySnapshot.docs.length - 1]);
-
-  //     setLastPage(querySnapshot.docs[querySnapshot.docs.length - 1]);
-
-  //     const data: TAddLetterProps[] = querySnapshot.docs.map((doc: any) => {
-  //       const docData = doc.data();
-  //       return {
-  //         letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
-  //         createAt: docData.createAt,
-  //         displayName: docData.displayName,
-  //         userUid: docData.userUid,
-  //         letterTitle: docData.letterTitle,
-  //         letterContent: docData.letterContent,
-  //         letterCategory: docData.letterCategory,
-  //         letterMod: docData.letterMod,
-  //         selectDate: docData.selectDate,
-  //       };
-  //     });
-
-  //     return data;
-
-  //     // return getNextLetters(sort, undefined);
-  //   },
-  //   initialPageParam: "",
-  //   getNextPageParam: (lastPage) => {
-  //     console.log("마지막 페이지", lastPage);
-  //     // console.log(
-  //     //   "마지막 페이지 아이디",
-  //     //   lastPage[lastPage.length - 1].letterId,
-  //     // );
-  //     // console.log(lastPage);
-  //     return lastPage.length !== 0
-  //       ? lastPage[lastPage.length - 1].letterId
-  //       : // undefined가 되어야 NextPageParam 이 false
-  //         undefined;
-  //   },
-  // });
-
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["letters", sort],
     queryFn: async ({ pageParam }) => {
@@ -131,14 +69,22 @@ const MainPages = () => {
       //   id: doc.id,
       // }));
       // return letters;
-      console.log("pageParam", pageParam);
+      const letterRef = collection(db, "letters");
 
-      const documentSnapshot = await getNextLetters(sort, pageParam);
+      const q = lastPage
+        ? query(
+            letterRef,
+            orderBy("createAt", sort),
+            startAfter(lastPage),
+            limit(5),
+          )
+        : query(letterRef, orderBy("createAt", sort), limit(5));
+      const querySnapshot = await getDocs(q);
       // console.log(querySnapshot.docs[querySnapshot.docs.length - 1]);
 
-      setLastPage(documentSnapshot[documentSnapshot.length - 1]);
+      setLastPage(querySnapshot.docs[querySnapshot.docs.length - 1]);
 
-      const data: TAddLetterProps[] = documentSnapshot.map((doc: any) => {
+      const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
         const docData = doc.data();
         return {
           letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
@@ -157,7 +103,7 @@ const MainPages = () => {
 
       // return getNextLetters(sort, undefined);
     },
-    initialPageParam: `${Query<DocumentData>}`,
+    initialPageParam: "",
     getNextPageParam: (lastPage) => {
       console.log("마지막 페이지", lastPage);
       // console.log(
@@ -168,9 +114,63 @@ const MainPages = () => {
       return lastPage.length > 0
         ? lastPage[lastPage.length - 1].letterId
         : // undefined가 되어야 NextPageParam 이 false
-          null;
+          undefined;
     },
   });
+
+  // const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  //   queryKey: ["letters", sort],
+  //   queryFn: async ({ pageParam }) => {
+  //     // const lastLetterId = pageParam;
+  //     // const query = getQuery(lastLetterId, "desc");
+  //     // const documentSnapshots = await getDocs(query);
+  //     // const documentSnapshots = getFirstLetters(sort);
+
+  //     // const letters = documentSnapshots.docs.map((doc) => ({
+  //     //   ...doc.data(),
+  //     //   id: doc.id,
+  //     // }));
+  //     // return letters;
+  //     console.log("pageParam", pageParam);
+
+  //     const documentSnapshot = await getNextLetters(sort, pageParam);
+  //     // console.log(querySnapshot.docs[querySnapshot.docs.length - 1]);
+
+  //     setLastPage(documentSnapshot[documentSnapshot.length - 1]);
+
+  //     const data: TAddLetterProps[] = documentSnapshot.map((doc: any) => {
+  //       const docData = doc.data();
+  //       return {
+  //         letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
+  //         createAt: docData.createAt,
+  //         displayName: docData.displayName,
+  //         userUid: docData.userUid,
+  //         letterTitle: docData.letterTitle,
+  //         letterContent: docData.letterContent,
+  //         letterCategory: docData.letterCategory,
+  //         letterMod: docData.letterMod,
+  //         selectDate: docData.selectDate,
+  //       };
+  //     });
+
+  //     return data;
+
+  //     // return getNextLetters(sort, undefined);
+  //   },
+  //   initialPageParam: `${Query<DocumentData>}`,
+  //   getNextPageParam: (lastPage) => {
+  //     console.log("마지막 페이지", lastPage);
+  //     // console.log(
+  //     //   "마지막 페이지 아이디",
+  //     //   lastPage[lastPage.length - 1].letterId,
+  //     // );
+  //     // console.log(lastPage);
+  //     return lastPage.length > 0
+  //       ? lastPage[lastPage.length - 1].letterId
+  //       : // undefined가 되어야 NextPageParam 이 false
+  //         null;
+  //   },
+  // });
 
   // isError && <div>에러</div>;
 

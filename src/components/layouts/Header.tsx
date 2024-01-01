@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleWriteMoveClick = () => {
-    navigate("/write");
+    navigate("/writingLetter");
   };
 
   const handleGoToHomeClick = () => {
