@@ -1,5 +1,7 @@
 import {
+  DocumentData,
   OrderByDirection,
+  Query,
   collection,
   deleteDoc,
   doc,
@@ -47,12 +49,7 @@ export const getFirstLetters = async (
   return data;
 };
 
-export const getPage = async (querySnapshot: any) => {
-  return querySnapshot.docs[querySnapshot.docs.length - 1];
-};
-
 export const getData = (docs: any) => {
-  // console.log(docs);
   const data: TAddLetterProps[] = docs.map((doc: any) => {
     console.log(doc);
     const docData = doc.data();
@@ -74,7 +71,7 @@ export const getData = (docs: any) => {
 
 export const getNextLetters = async (
   letterSort: OrderByDirection,
-  pageParam: any,
+  pageParam: Query<DocumentData>,
 ) => {
   const letterRef = collection(db, "letters");
   const q = pageParam
@@ -88,28 +85,30 @@ export const getNextLetters = async (
   const querySnapshot = await getDocs(q);
 
   return querySnapshot.docs;
-
-  // getPage()
-  // console.log("last :: ", querySnapshot.docs[querySnapshot.docs.length - 1]);
-
-  // getData()
-  // const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
-  //   const docData = doc.data();
-  //   return {
-  //     letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
-  //     createAt: docData.createAt,
-  //     displayName: docData.displayName,
-  //     userUid: docData.userUid,
-  //     letterTitle: docData.letterTitle,
-  //     letterContent: docData.letterContent,
-  //     letterCategory: docData.letterCategory,
-  //     letterMod: docData.letterMod,
-  //     selectDate: docData.selectDate,
-  //   };
-  // });
-
-  // return data;
 };
+
+// getPage()
+// console.log("last :: ", querySnapshot.docs[querySnapshot.docs.length - 1]);
+
+// getData()
+// const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
+//   const docData = doc.data();
+//   return {
+//     letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
+//     createAt: docData.createAt,
+//     displayName: docData.displayName,
+//     userUid: docData.userUid,
+//     letterTitle: docData.letterTitle,
+//     letterContent: docData.letterContent,
+//     letterCategory: docData.letterCategory,
+//     letterMod: docData.letterMod,
+//     selectDate: docData.selectDate,
+//   };
+// });
+
+// return data;
+
+// export const documentSnapshot = getNextLetters();
 
 export const getLetter = async (id: string) => {
   const querySnapshot = await getDoc(doc(db, "letters", id));
