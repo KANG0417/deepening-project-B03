@@ -20,7 +20,7 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
-            <Route path="/my" element={<MyPage />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/writingLetter" element={<WritingLetter />} />
           </Route>
           {/* ReadLetterPage : 임시경로 */}
