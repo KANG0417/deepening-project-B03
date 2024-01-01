@@ -6,7 +6,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 interface TPost {
   title: string;
-  contents: string;
+  comment: string;
   createdAt: number;
 }
 
@@ -17,7 +17,6 @@ interface PostWithId extends TPost {
 interface SButtonProps {
   active: boolean;
 }
-
 
 const getFormattedDate = (date: number) =>
   new Date(date).toLocaleDateString('ko', {
@@ -30,7 +29,9 @@ const getFormattedDate = (date: number) =>
 
 const MyPage = () => {
   const [posts, setPosts] = useState<PostWithId[]>([]);
+  const [comments, setComments] = useState<PostWithId[]>([]); 
   const [viewMode, setViewMode] = useState('letters');
+  const [timers, setTimers] = useState<{ [postId: string]: number }>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,13 +48,33 @@ const MyPage = () => {
       setPosts(postsList);
     };
 
+    const fetchComments = async () => {
+      const commentsCollectionRef = collection(db, 'comments'); 
+  
+      try {
+        const commentsSnapshot = await getDocs(commentsCollectionRef);
+        const commentsList: PostWithId[] = commentsSnapshot.docs.map((doc) => {
+          const data = doc.data() as TPost; 
+          return {
+            id: doc.id,
+            ...data,
+          };
+        });
+        setComments(commentsList);
+      } catch (error) {
+        console.error('댓글 데이터를 불러오는 도중 오류가 발생했습니다.', error);
+      }
+    };
+    console.log(comments);
     fetchPosts();
+    fetchComments();
   }, []);
+  
+
   const isTwoDaysOld = (createdAt: number) => {
-    const twoDays = 2 * 24 * 60 * 60 * 1000; // 2일을 밀리초로 환산
+    const twoDays = 2 * 24 * 60 * 60 * 1000; 
     return (Date.now() - createdAt) > twoDays;
   };
-  
 
   const showLetters = () => {
     setViewMode('letters');
@@ -64,23 +85,23 @@ const MyPage = () => {
   };
 
   const goToDetailPage = (post: PostWithId) => {
-   
     const timeDiff = Date.now() - post.createdAt;
-    const twoDays = 2 * 24 * 60 * 60 * 1000; 
+    const twoDays = 2 * 24 * 60 * 60 * 1000;
 
     if (timeDiff > twoDays) {
-      
       alert('편지를 작성하신지 2일이 경과되어 수정 / 삭제가 불가능합니다.');
     } else {
-      
       navigate(`/detail/${post.id}`);
     }
   };
 
+
+  const itemsToRender = viewMode === 'letters' ? posts : comments;
+
   return (
     <SWrapper>
-    <SContainer>
-    <SButtonGroup>
+      <SContainer>
+        <SButtonGroup>
           <SButton onClick={showLetters} active={viewMode === 'letters'}>
             내가 작성한 편지들
           </SButton>
@@ -88,40 +109,47 @@ const MyPage = () => {
             내가 작성한 댓글들
           </SButton>
         </SButtonGroup>
-      <SPostsGrid>
-      {posts.map((post) => (
-        <SPostCard
-         key={post.id}
-         onClick={() => goToDetailPage(post)}
-         className={isTwoDaysOld(post.createdAt) && viewMode === 'letters' ? 'uneditable' : ''}
-         style={{ order: isTwoDaysOld(post.createdAt) ? 1 : 0 }}
-         >
-          {viewMode === 'letters' ? (
-            <>
-              <SPostTitle>{post.title}</SPostTitle>
-              {isTwoDaysOld(post.createdAt) ? (
-                <SPostStatus>
-                <SPlaneIcon>✈️</SPlaneIcon>
-                <div>편지가 배송중이에요!</div>
-              </SPostStatus>
+        <SPostsGrid>
+          {itemsToRender.map((item) => (
+            <SPostCard
+              key={item.id}
+              onClick={() => goToDetailPage(item)}
+              className={isTwoDaysOld(item.createdAt) ? 'uneditable' : ''}
+              style={{ order: isTwoDaysOld(item.createdAt) ? 1 : 0 }}
+            >
+              {viewMode === 'letters' ? (
+                <>
+                  <SPostTitle>{item.title}</SPostTitle>
+                  {isTwoDaysOld(item.createdAt) ? (
+                    <SPostStatus>
+                      <SPlaneIcon>✈️</SPlaneIcon>
+                      <div>편지가 배송중이에요!</div>
+                    </SPostStatus>
+                  ) : (
+                    <SPostEditLink>편지를 수정할 수 있어요!</SPostEditLink>
+                  )}
+                  <SPostDate>{getFormattedDate(item.createdAt)}</SPostDate>
+                </>
               ) : (
-                <SPostEditLink>편지를 수정할 수 있어요!</SPostEditLink>
+                <SPostComments>
+                   {/* 댓글 데이터 렌더링 */}
+                {comments.map((comment) => (
+                  <div key={comment.id}>
+                    {/* 댓글 내용을 여기에 출력 */}
+                    {comment.comment}
+                  </div>
+                ))}
+                </SPostComments>
               )}
-              <SPostDate>{getFormattedDate(post.createdAt)}</SPostDate>
-            </>
-          ) : (              
-            <SPostComments>댓글 내용...</SPostComments>
-          )}
-        </SPostCard>
-      ))}
-    </SPostsGrid>
-    </SContainer>
+            </SPostCard>
+          ))}
+        </SPostsGrid>
+      </SContainer>
     </SWrapper>
   );
 };
 
 export default MyPage;
-
 
 const SWrapper = styled.div`
 `
