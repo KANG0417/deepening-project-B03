@@ -230,27 +230,32 @@ const MainPages = () => {
       </SMainSentenceWrapper>
       <SFilterLocationWrapper>
         <SFilterWrapper>
-          필터
+          정렬
           <ul>
-            <li>최신순</li>
-            <li>오래된순</li>
+            <button onClick={() => handleClickSort("latest")}>최신순</button>
+            <button onClick={() => handleClickSort("oldest")}>오래된순</button>
           </ul>
         </SFilterWrapper>
       </SFilterLocationWrapper>
       <SLetterListWrapper>
         <SLetterList>
-          <li>제목: </li>
-
-          <li>내용: </li>
-          <li>태그: </li>
-          <li>좋아요: 123</li>
+          <SLetterInforWrapper>
+            <STitleAndDayWrapper>
+              <SLetterDay>2023년 12월 26일 08:11</SLetterDay>
+              <STag>#졸림</STag>
+              <SLetterNickName>아보카도샐러드</SLetterNickName>
+            </STitleAndDayWrapper>
+            <STagAndLikeWrapper>
+              {/* 여기 다시 손 봐야 됩니다 */}
+              <li>💙: 123</li>
+            </STagAndLikeWrapper>
+          </SLetterInforWrapper>
+          <SLetterContentWrapper>
+            <li>25살의 안나가 10년뒤 35살의 안나에게 보내는 편지</li>
+          </SLetterContentWrapper>
         </SLetterList>
       </SLetterListWrapper>
-      <ul>
-        정렬
-        <button onClick={() => handleClickSort("latest")}>최신순</button>
-        <button onClick={() => handleClickSort("oldest")}>오래된순</button>
-      </ul>
+
       <InfiniteScroll
         dataLength={data?.pages.length ? data.pages.length : 0}
         next={fetchNextPage}
@@ -313,7 +318,7 @@ const SFilterWrapper = styled.div`
     gap: 20px;
     font-size: 18px;
   }
-  li {
+  button {
     color: #e5e5e5;
   }
 `;
@@ -321,17 +326,84 @@ const SFilterWrapper = styled.div`
 const SLetterListWrapper = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   margin-top: 40px;
 `;
 
 const SLetterList = styled.ul`
   width: 630px;
-  height: 435px;
-  padding: 27px;
+  /* height: 435px; */
+  padding: 30px;
   border-radius: 30px;
   background-color: #fff;
   box-shadow: 0px 4px 30px 5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const SLetterInforWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const STitleAndDayWrapper = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const SLetterDay = styled.li`
+  color: #dadada;
+
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
+const SLetterNickName = styled.li`
+  font-size: 30px;
+  color: var(--button-background);
+`;
+
+const STagAndLikeWrapper = styled.ul`
+  display: flex;
+  gap: 10px;
+  li {
+    font-family: Pretendard;
+    font-size: 20px;
+    color: var(--button-background);
+  }
+`;
+
+const STag = styled.ul`
+  font-weight: 700;
+  font-family: Pretendard;
+  font-size: 20px;
+  color: var(--header-color);
+`;
+
+const SLetterContentWrapper = styled.ul`
+  background-color: #f9fafb;
+  margin-top: 15px;
+  border-radius: 25px;
+
+  height: 323px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  li {
+    font-size: 32px;
+    text-align: center;
+    color: var(--button-background);
+    margin-left: 78px;
+    margin-right: 78px;
+    line-height: 48px;
+  }
 `;
 
 const SMainSentenceWrapper = styled.div`
@@ -344,11 +416,7 @@ const SMainSentenceWrapper = styled.div`
     margin-top: 100px;
     margin-bottom: 100px;
   }
-  height: 800px;
-  border: 1px solid black;
-  margin: 0 auto 5rem auto;
-`;
 
-const SLetterList = styled.div`
-  cursor: pointer;
+  /* border: 1px solid black; */
+  margin: 0 auto 5rem auto;
 `;
