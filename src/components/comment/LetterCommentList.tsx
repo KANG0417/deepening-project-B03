@@ -10,14 +10,17 @@ const LetterCommentList = () => {
             <p>오늘은김볶밥</p>
             <time>2023.11.28 목</time>
           </NickNameandDate>
-          <Comment>고양이 결국 키우게 됐나요? 궁금하네요</Comment>
+          <Comment>
+            고양이 결국 키우게 됐나요? 궁금하네요 고양이 결국 키우게 됐나요?
+            궁금하네요 고양이 결국 키우게 됐나요? 궁금하네요
+          </Comment>
         </CommentCard>
       </CommentWrapper>
       <CommentWrapper>
         <CommentCard>
           <NickNameandDate>
             <p>소삼이</p>
-            <time>2023.11.28 </time>
+            <time>2023.11.28 목</time>
           </NickNameandDate>
           <Comment>미래에서 당신의 생일축하합니다</Comment>
         </CommentCard>
@@ -29,7 +32,7 @@ const LetterCommentList = () => {
 export default LetterCommentList;
 
 const SCommentContainer = styled.div`
-  border: solid 3px lightgreen;
+  /* border: solid 3px lightgreen; */
   gap: 2rem;
   display: flex;
   flex-direction: column;
@@ -39,28 +42,51 @@ const SCommentContainer = styled.div`
   margin-bottom: 40px;
 `;
 const CommentWrapper = styled.ul`
-  border: solid 1px lightslategrey;
+  background-color: #fff;
+  box-shadow: 0px 4px 23px 5px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  justify-content: center;
+  align-items: center;
+
   margin-top: 5px;
-  width: 500px;
+  width: 570px;
+  height: 100px;
+  padding: 20px;
   border-radius: 10px;
 `;
 const CommentCard = styled.li`
+  background-color: #f9fafb;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-left: 10px;
+  width: 520px;
+  border-radius: 5px;
+  padding: 30px;
+  gap: 20px;
 `;
 const NickNameandDate = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 4px 5px 0px 5px;
+
+  p {
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--button-background);
+  }
+  time {
+    font-family: Pretendard;
+    font-size: 10px;
+    color: #dadada;
+  }
 `;
 
 const Comment = styled.p`
-  background-color: gray;
-  border-radius: 12px;
-  padding: 12px;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 18px;
+  width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;

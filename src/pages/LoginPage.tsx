@@ -19,6 +19,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [displayNameError, setDisplayNameError] = useState<string>("");
 
   // const auth = getAuth();
   const user = auth.currentUser;
@@ -41,6 +44,38 @@ const LoginPage = () => {
     }
   };
 
+  const handleBlur = (event: ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name },
+    } = event;
+
+    // 에러 메시지 초기화
+    if (name === "email") {
+      setEmailError("");
+    } else if (name === "password") {
+      setPasswordError("");
+    }
+
+    // 이메일 형식이 아닌 경우
+    const emailRegEx =
+      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+    const isEmailValid = emailRegEx.test(email);
+
+    if (!isEmailValid) {
+      setEmailError("유효하지 않은 이메일 형식입니다");
+      return false;
+    }
+
+    // 비밀번호 길이 조건이 안 맞는 경우
+    const isPasswordValid = password.length >= 5;
+
+    if (!isPasswordValid) {
+      setPasswordError("비밀번호는 6자 이상 사용해야 합니다");
+
+      return false;
+    }
+  };
+
   const handleClickSignIn = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -54,6 +89,7 @@ const LoginPage = () => {
       alert(`${displayName}님 안녕하세요`);
       navigate("/");
     } catch (error) {
+      alert("로그인에 실패했습니다");
       console.error(error);
     }
   };
@@ -127,8 +163,11 @@ const LoginPage = () => {
               name="email"
               onChange={handleClickOnChange}
               required
+              placeholder="example@zum.com"
+              onBlur={handleBlur}
             ></input>
           </SLoginPageInputWrapper>
+          {emailError && <SErrorMessage>{emailError}</SErrorMessage>}
           <SLoginPageInputWrapper>
             <label>비밀번호</label>
             <input
@@ -137,8 +176,11 @@ const LoginPage = () => {
               name="password"
               onChange={handleClickOnChange}
               required
+              placeholder="영문 + 숫자 조합으로 6자 이상 입력해주세요 :)"
+              onBlur={handleBlur}
             ></input>
           </SLoginPageInputWrapper>
+          {passwordError && <SErrorMessage>{passwordError}</SErrorMessage>}
           <SLoginPageLoginButton onClick={handleClickSignIn}>
             로그인
           </SLoginPageLoginButton>
@@ -214,6 +256,8 @@ const SLoginPageForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 30px;
 `;
 
 const SLoginPageInputWrapper = styled.div`
@@ -237,7 +281,10 @@ const SLoginPageInputWrapper = styled.div`
     height: 60px;
     flex-shrink: 0;
     padding-left: 20px;
-    margin-bottom: 36px;
+    /* margin-bottom: 36px; */
+  }
+  input::placeholder {
+    color: #e2e2e2;
   }
 `;
 
@@ -258,14 +305,14 @@ const SLoginPageLoginButton = styled.button`
   padding: 0;
   cursor: pointer;
   margin-top: 19px;
-  margin-bottom: 55px;
 `;
 
 const SLoginPageJoinButton = styled.button`
   font-family: Pretendard;
-  margin-top: 30px;
+
   font-size: 16px;
   color: #b1b1b1;
+  width: 140px;
 `;
 
 export const SLoginPageGoogleLogin = styled.button`
@@ -288,4 +335,13 @@ export const SLoginPageGithubLogin = styled.button`
   background-size: 100%;
   background-repeat: no-repeat;
   cursor: pointer;
+`;
+
+const SErrorMessage = styled.div`
+  color: #ff6d6d;
+  font-size: 14px;
+  margin-top: -22px;
+  margin-bottom: -22px;
+  font-family: Pretendard;
+  width: 100%;
 `;

@@ -20,11 +20,11 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
-            <Route path="/my" element={<MyPage />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/writingLetter" element={<WritingLetter />} />
+            <Route path="/letterDetail" element={<LetterDetailPage />} />
           </Route>
           {/* ReadLetterPage : 임시경로 */}
-          <Route path="/letterDetail" element={<LetterDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
         </Routes>

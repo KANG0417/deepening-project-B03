@@ -16,7 +16,7 @@ const SFooterWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: auto;
+  height: 203px;
   background-color: var(--button-background);
 `;
 

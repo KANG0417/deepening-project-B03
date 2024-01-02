@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MenuButton from "../button/MenuButton";
+import MenuButton from "../buttons/MenuButton";
 import WriteIcon from "../../assets/icons/writingIcon.png";
 import { useNavigate } from "react-router-dom";
 import UserMenuDropDown from "../dropDownList/UserMenuDropDown";
@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleWriteMoveClick = () => {
-    navigate("/write");
+    navigate("/writingLetter");
   };
 
   const handleGoToHomeClick = () => {

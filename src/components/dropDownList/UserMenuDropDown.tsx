@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MenuButton from "../button/MenuButton";
+import MenuButton from "../buttons/MenuButton";
 import UserIcon from "../../assets/icons/userIcon.png";
 import topChvronIcon from "../../assets/icons/topChevronIcon.png";
 import bottomChvronIcon from "../../assets/icons/bottomChevronIcon.png";
@@ -38,9 +38,9 @@ const UserMenuDropDown = () => {
   const onOptionClick = async (option: string) => {
     switch (option) {
       case MYPAGE:
-        return navigate("/write");
+        return navigate("/mypage");
       case LOGOUT:
-        return await auth.signOut();
+        return navigate("/login");
       default:
         alert("관리자에게 문의하세요");
         break;
