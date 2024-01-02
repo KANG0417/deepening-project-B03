@@ -6,6 +6,9 @@ import LayoutPage from "../pages/LayoutPage";
 import LoginPage from "../pages/LoginPage";
 import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
+import MyPage from "../pages/MyPage";
+import LetterDetailPage from "../pages/LetterDetailPage";
+import WritingLetter from "../pages/WritingLetter";
 
 const Router = () => {
   return (
@@ -17,7 +20,11 @@ const Router = () => {
         <Routes>
           <Route element={<LayoutPage />}>
             <Route path="/" element={<MainPage />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/writingLetter" element={<WritingLetter />} />
+            <Route path="/letterDetail" element={<LetterDetailPage />} />
           </Route>
+          {/* ReadLetterPage : 임시경로 */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
         </Routes>

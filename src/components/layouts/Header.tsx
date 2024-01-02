@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import MenuButton from "../button/MenuButton";
+import MenuButton from "../buttons/MenuButton";
 import WriteIcon from "../../assets/icons/writingIcon.png";
 import { useNavigate } from "react-router-dom";
 import UserMenuDropDown from "../dropDownList/UserMenuDropDown";
+import logo from "../../assets/logos/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
 
   const handleWriteMoveClick = () => {
-    navigate("/write");
+    navigate("/writingLetter");
   };
 
   const handleGoToHomeClick = () => {
@@ -18,7 +19,7 @@ const Header = () => {
   return (
     <SHeaderWrapper>
       <SHeaderContainer>
-        <SHeaderTitle onClick={handleGoToHomeClick}>익명의 편지함</SHeaderTitle>
+        <SHeaderTitle onClick={handleGoToHomeClick}></SHeaderTitle>
         <SMenuBar>
           <li>
             <MenuButton
@@ -40,12 +41,9 @@ export default Header;
 
 const SHeaderWrapper = styled.header`
   width: 100%;
-  height: 150px;
-  background-image: linear-gradient(
-    to top,
-    var(--white) 50%,
-    var(--header-color) 50%
-  );
+  height: 88px;
+  background-color: var(--header-color);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -54,12 +52,17 @@ const SHeaderWrapper = styled.header`
 const SHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  align-items: center;
+  width: 846px;
 `;
 
-const SHeaderTitle = styled.h1`
-  font-size: 4rem;
-  margin: 0 0 0 650px;
+const SHeaderTitle = styled.div`
+  background-image: url(${logo});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 150px;
+  height: 60px;
   cursor: pointer;
 `;
 
