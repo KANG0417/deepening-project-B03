@@ -41,7 +41,7 @@ export const getFirstLetters = async (
       letterTitle: docData.letterTitle,
       letterContent: docData.letterContent,
       letterCategory: docData.letterCategory,
-      letterMod: docData.letterMod,
+      letterIsOpen: docData.letterIsOpen,
       selectDate: docData.selectDate,
     };
   });

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MenuButton from "../button/MenuButton";
 import WriteIcon from "../../assets/icons/writingIcon.png";
 import { useNavigate } from "react-router-dom";
-import UserMenuDropDown from "../dropDownList/UserMenuDropDown";
+import UserMenuDropDown from "../dropDownList";
 import logo from "../../assets/logos/logo.png";
 
 const Header = () => {

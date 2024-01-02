@@ -2,53 +2,35 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 import Calendar from "./Calendar";
-import WritingField from "./WritingField";
+import { TWritingProps } from "../../types/letter";
 
-const OptionBox = ({ letterIndex }: { letterIndex: string }) => {
-  const initialTags = ["신년인사", "연인에게", "익명에게"];
-  const [tags, setTags] = useState<string[]>(initialTags);
-  const [isSendImmediate, setIsSendImmediate] = useState<boolean>(true);
-  const [isPublic, setIsPublic] = useState<boolean>(true);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+const OptionBox = () => {
+  // // 바로보내기 or 예약보내기 버튼 활성화
+  // const SendToggleButton = (isSendImmediate: boolean) => {
+  //   setIsSendImmediate(isSendImmediate);
+  //   if (!isSendImmediate) {
+  //     setSelectedDate(new Date());
+  //   }
+  // };
 
-  // 바로보내기 or 예약보내기 버튼 활성화
-  const SendToggleButton = (isSendImmediate: boolean) => {
-    setIsSendImmediate(isSendImmediate);
-    if (!isSendImmediate) {
-      setSelectedDate(new Date());
-    }
-  };
+  // // 공개 or 비공개 버튼 활성화
+  // const ToggleButton = (isPublic: boolean) => {
+  //   setIsPublic(isPublic);
+  // };
 
-  // 공개 or 비공개 버튼 활성화
-  const ToggleButton = (isPublic: boolean) => {
-    setIsPublic(isPublic);
-  };
-
-  // 태그 클릭 시 동작
-  const TagHandler = (clickedTag: string) => {
-    setSelectedTag((prevSelectedTag) =>
-      prevSelectedTag === clickedTag ? null : clickedTag,
-    );
-  };
+  // // 태그 클릭 시 동작
+  // const TagHandler = (clickedTag: string) => {
+  //   setSelectedTag((prevSelectedTag) =>
+  //     prevSelectedTag === clickedTag ? null : clickedTag,
+  //   );
+  // };
 
   // 보내기 버튼
-  const SendInformationHandler = () => {
-    const userInformation = {
-      tags: selectedTag ? [selectedTag] : [],
-      isSendImmediate,
-      isPublic,
-      selectedDate,
-      letterIndex,
-    };
-    console.log(userInformation);
-    alert("성공적으로 보내졌습니다");
-  };
 
   return (
     <>
       <SOptionBox>
-        <SButtonText>태그를 선택해주세요</SButtonText>
+        {/* <SButtonText>태그를 선택해주세요</SButtonText>
         <div>
           {tags.map((tag) => (
             <SPublicButton
@@ -87,7 +69,7 @@ const OptionBox = ({ letterIndex }: { letterIndex: string }) => {
             익명으로 공개
           </SPublicButton>
         </SButtonGroup>
-        <SSendButton onClick={SendInformationHandler}>보내기</SSendButton>
+        <SSendButton onClick={SendInformationHandler}>보내기</SSendButton> */}
       </SOptionBox>
     </>
   );

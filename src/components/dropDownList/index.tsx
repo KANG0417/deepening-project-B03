@@ -38,9 +38,17 @@ const UserMenuDropDown = () => {
   const onOptionClick = async (option: string) => {
     switch (option) {
       case MYPAGE:
-        return navigate("/write");
+        return navigate("/mypage");
       case LOGOUT:
-        return await auth.signOut();
+        try {
+          await auth.signOut();
+          // 성공적으로 로그아웃했을 때의 추가 동작을 수행할 수 있습니다.
+        } catch (error: unknown) {
+          // 로그아웃 중에 발생한 오류를 처리합니다.
+          if (error instanceof Error)
+            console.error("로그아웃 오류:", error.message);
+        }
+        break;
       default:
         alert("관리자에게 문의하세요");
         break;

@@ -12,8 +12,15 @@ export type TAddLetterProps = {
   displayName: string;
   userUid: string;
   letterTitle: string;
-  letterContent: string;
+  letterContent: string | undefined;
   letterCategory: string;
-  letterMod: string;
+  letterIsOpen: boolean;
   selectDate: string;
+};
+
+export type TWritingProps = {
+  letterContent?: string;
+  setLetterContent?: React.Dispatch<React.SetStateAction<string>>;
+
+  onChange?: (content?: string) => void;
 };
