@@ -9,7 +9,7 @@ import { addLetter, getFirstLetters, getNextLetters } from "../api/letterList";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
-import ScrollOnTheTop from "../components/scrollOnTheTop";
+
 import { TAddLetterProps } from "../types/letter";
 import {
   DocumentData,
@@ -26,6 +26,7 @@ import {
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { db } from "../firebase/firebase.config";
+import ScrollToTopButton from "../components/buttons/ScrollToTopButton";
 
 const getQuery = (lastVisible: Query<DocumentData>) =>
   lastVisible
@@ -174,21 +175,6 @@ const MainPages = () => {
 
   // isError && <div>에러</div>;
 
-  const onClickHandler = () => {
-    const newLetter = {
-      createAt: dayjs().format("YYYY년MM월DD일 hh:mm:ss"),
-      displayName: "테스트",
-      userUid: "테스트",
-      letterTitle: "테스트11",
-      letterContent: "테스트11",
-      letterCategory: "테스트",
-      letterMod: "public",
-      selectDate: "테스트",
-    };
-
-    addTodoMutation.mutate(newLetter);
-  };
-
   const handleClickSort = (sortValue: string) => {
     switch (sortValue) {
       case "latest":
@@ -228,6 +214,7 @@ const MainPages = () => {
       <SMainSentenceWrapper>
         <li>"소중한 편지를 오래 기억해요"</li>
       </SMainSentenceWrapper>
+
       <SFilterLocationWrapper>
         <SFilterWrapper>
           정렬
@@ -238,22 +225,46 @@ const MainPages = () => {
         </SFilterWrapper>
       </SFilterLocationWrapper>
       <SLetterListWrapper>
-        <SLetterList>
-          <SLetterInforWrapper>
-            <STitleAndDayWrapper>
-              <SLetterDay>2023년 12월 26일 08:11</SLetterDay>
-              <STag>#졸림</STag>
-              <SLetterNickName>아보카도샐러드</SLetterNickName>
-            </STitleAndDayWrapper>
-            <STagAndLikeWrapper>
-              {/* 여기 다시 손 봐야 됩니다 */}
-              <li>💙: 123</li>
-            </STagAndLikeWrapper>
-          </SLetterInforWrapper>
-          <SLetterContentWrapper>
-            <li>25살의 안나가 10년뒤 35살의 안나에게 보내는 편지</li>
-          </SLetterContentWrapper>
-        </SLetterList>
+        {data?.pages.map((page) => {
+          return page.map((letter) => {
+            return (
+              <SLetterList
+                key={letter.letterId}
+                onClick={() => handleClickGoToDetail(letter.letterMod)}
+              >
+                {letter.letterMod === "public" ? (
+                  // <ul>
+                  //   <li>제목: {letter.letterTitle}</li>
+                  //   <li>날짜: {letter.createAt}</li>
+                  //   <li>태그: </li>
+                  //   <li>좋아요: </li>
+                  //   <li></li>
+                  // </ul>
+                  <>
+                    <SLetterInforWrapper>
+                      <STitleAndDayWrapper>
+                        <SLetterDay>2023년 12월 26일 08:11</SLetterDay>
+                        <STag>#졸림</STag>
+                        <SLetterNickName>아보카도샐러드</SLetterNickName>
+                      </STitleAndDayWrapper>
+                      <STagAndLikeWrapper>
+                        {/* 여기 다시 손 봐야 됩니다 */}
+                        <li>💙: 123</li>
+                      </STagAndLikeWrapper>
+                    </SLetterInforWrapper>
+                    <SLetterContentWrapper>
+                      <li>25살의 안나가 10년뒤 35살의 안나에게 보내는 편지</li>
+                    </SLetterContentWrapper>
+                  </>
+                ) : (
+                  <ul>
+                    <li>비공개 모드입니다!</li>
+                  </ul>
+                )}
+              </SLetterList>
+            );
+          });
+        })}
       </SLetterListWrapper>
 
       <InfiniteScroll
@@ -262,35 +273,12 @@ const MainPages = () => {
         hasMore={hasNextPage}
         loader={<h4>Loading...</h4>}
       >
-        <ul>
-          {data?.pages.map((page) => {
-            return page.map((letter) => {
-              return (
-                <SLetterList
-                  key={letter.letterId}
-                  onClick={() => handleClickGoToDetail(letter.letterMod)}
-                >
-                  {letter.letterMod === "public" ? (
-                    <ul>
-                      <li>제목: {letter.letterTitle}</li>
-                      <li>날짜: {letter.createAt}</li>
-                      <li>태그: </li>
-                      <li>좋아요: </li>
-                      <li></li>
-                    </ul>
-                  ) : (
-                    <ul>
-                      <li>비공개 모드입니다!</li>
-                    </ul>
-                  )}
-                </SLetterList>
-              );
-            });
-          })}
-        </ul>
+        <SLetterListWrapper></SLetterListWrapper>
       </InfiniteScroll>
-      <ScrollOnTheTop />
-      {/* <button onClick={onClickHandler}>등록</button> */}
+
+      {/* <ScrollOnTheTop /> */}
+
+      <ScrollToTopButton />
     </SMainWrapper>
   );
 };
@@ -300,7 +288,7 @@ export default MainPages;
 const SMainWrapper = styled.div`
   font-size: 2.5rem;
   /* border: 1px solid black; */
-  margin: 0 auto 5rem auto;
+  /* margin: 0 auto 5rem auto; */
 `;
 
 const SFilterLocationWrapper = styled.div`
@@ -325,6 +313,7 @@ const SFilterWrapper = styled.div`
 
 const SLetterListWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -342,6 +331,11 @@ const SLetterList = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-bottom: 30px;
+  transition: all 0.5s ease;
+  &:hover {
+    transform: scale(1.08);
+  }
 `;
 
 const SLetterInforWrapper = styled.div`
