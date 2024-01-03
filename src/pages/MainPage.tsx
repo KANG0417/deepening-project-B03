@@ -116,7 +116,7 @@ const MainPages = () => {
         dataLength={data?.pages.length ? data?.pages.length : 0}
         next={fetchNextPage}
         hasMore={hasNextPage}
-        loader={<h4>Loading...</h4>}
+        loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
       >
         <SLetterListWrapper>
           {data?.pages.map((page) => {
