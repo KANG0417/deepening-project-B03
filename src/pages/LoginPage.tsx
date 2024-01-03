@@ -113,8 +113,6 @@ const LoginPage = () => {
         const token = credential.accessToken;
         const userName = res.user.displayName;
 
-        console.log(token);
-
         alert(`${userName}님 환영합니다!`);
 
         navigate("/");

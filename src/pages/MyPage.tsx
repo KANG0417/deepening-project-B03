@@ -33,10 +33,7 @@ const getFormattedDate = (date: number) =>
   });
 
 const MyPage = () => {
-  const [posts, setPosts] = useState<TAddLetterProps[]>([]);
-  const [comments, setComments] = useState<TAddCommentProps[]>([]);
   const [viewMode, setViewMode] = useState("letters");
-  const [timers, setTimers] = useState<{ [postId: string]: number }>({});
   const navigate = useNavigate();
 
   const showLetters = () => {
@@ -63,8 +60,6 @@ const MyPage = () => {
       navigate(`/letterDetail/${letter.letterId}`);
     }
   };
-
-  const itemsToRender = viewMode === "letters" ? posts : comments;
 
   return (
     <SWrapper>
@@ -97,17 +92,12 @@ const MyPage = () => {
                         <SPostEditLink>편지를 수정할 수 있어요!</SPostEditLink>
                       </>
                     )}
-                    {/* <SPostDate>{getFormattedDate(letter)}</SPostDate> */}
+                    <SPostDate></SPostDate>
                   </>
                 ) : (
                   <SPostComments>
                     {/* 댓글 데이터 렌더링 */}
-                    {/* {comments.map((comment) => (
-                        <div key={comment.id}> */}
                     {/* 댓글 내용을 여기에 출력 */}
-                    {/* {comment.comment}
-                        </div>
-                      ))} */}
                   </SPostComments>
                 )}
               </SPostCard>

@@ -76,7 +76,6 @@ const JoinPage = () => {
 
   const handleClickSignUp = async (event: FormEvent) => {
     event.preventDefault();
-    console.log("test");
     const nowDate = dayjs().format("YY년 MM월 DD일 HH:mm:ss");
 
     // 이메일 중복 확인
@@ -84,15 +83,11 @@ const JoinPage = () => {
       collection(db, "users"),
       where("email", "==", email),
     );
-    console.log("emailQuery", emailQuery);
 
     const emailSnapshot = await getDocs(emailQuery);
-    console.log("emailSnapshot", emailSnapshot.docs);
-    console.log("이거이거", emailSnapshot.empty);
 
     if (!emailSnapshot.empty) {
       alert("이미 사용 중인 이메일입니다");
-      console.log("사용중임");
       window.location.reload();
       return false;
     } else {

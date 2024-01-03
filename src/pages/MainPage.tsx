@@ -1,17 +1,12 @@
 import styled from "styled-components";
 import { queryKeys } from "../query/keys.Constans";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { getFirstLetters, getNextLetters } from "../api/letterList";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { TAddLetterProps } from "../types/letter";
 import {
   DocumentData,
-  DocumentSnapshot,
-  OrderByDirection,
-  Query,
-  QuerySnapshot,
   collection,
   getDocs,
   limit,
@@ -23,16 +18,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { auth, db } from "../firebase/firebase.config";
 import ScrollToTopButton from "../components/buttons/ScrollToTopButton";
 
-// const getQuery = (lastVisible: Query<DocumentData>) =>
-//   lastVisible
-//     ? query(
-//         collection(db, "cities"),
-//         orderBy("population"),
-//         startAfter(lastVisible),
-//         limit(25),
-//       )
-//     : query(collection(db, "cities"), orderBy("population"), limit(25));
-
 const MainPages = () => {
   const [letterSort, setLetterSort] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -40,31 +25,10 @@ const MainPages = () => {
   const sort = letterSort ? "desc" : "asc";
   const [lastPage, setLastPage] = useState<DocumentData>();
 
-  // const addTodoMutation = useMutation({
-  //   mutationFn: addLetter,
-  //   onSuccess: async () => {
-  //     alert("게시물이 등록되었습니다!");
-  //     await queryClient.invalidateQueries({ queryKey: [queryKeys.LETTERS] });
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
-
   // 정렬 분기처리
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: [queryKeys.LETTERS, sort],
     queryFn: async ({ pageParam }) => {
-      // const lastLetterId = pageParam;
-      // const query = getQuery(lastLetterId, "desc");
-      // const documentSnapshots = await getDocs(query);
-      // const documentSnapshots = getFirstLetters(sort);
-
-      // const letters = documentSnapshots.docs.map((doc) => ({
-      //   ...doc.data(),
-      //   id: doc.id,
-      // }));
-      // return letters;
       const letterRef = collection(db, "letters");
 
       const q = lastPage
@@ -76,7 +40,6 @@ const MainPages = () => {
           )
         : query(letterRef, orderBy("createAt", sort), limit(2));
       const querySnapshot = await getDocs(q);
-      // console.log(querySnapshot.docs[querySnapshot.docs.length - 1]);
 
       setLastPage(querySnapshot.docs[querySnapshot.docs.length - 1]);
 
@@ -96,78 +59,15 @@ const MainPages = () => {
       });
 
       return data;
-
-      // return getNextLetters(sort, undefined);
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      // console.log(
-      //   "마지막 페이지 아이디",
-      //   lastPage[lastPage.length - 1].letterId,
-      // );
-      // console.log(lastPage);
       return lastPage.length > 0
         ? lastPage[lastPage.length - 1].letterId
         : // undefined가 되어야 NextPageParam 이 false
           undefined;
     },
   });
-
-  // const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-  //   queryKey: ["letters", sort],
-  //   queryFn: async ({ pageParam }) => {
-  //     const lastLetterId = pageParam;
-  //     const query = getQuery(lastLetterId, "desc");
-  //     const documentSnapshots = await getDocs(query);
-  //     const documentSnapshots = getFirstLetters(sort);
-
-  //     const letters = documentSnapshots.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     return letters;
-  //     console.log("pageParam", pageParam);
-
-  //     const documentSnapshot = await getNextLetters(sort, pageParam);
-  //     // console.log(querySnapshot.docs[querySnapshot.docs.length - 1]);
-
-  //     setLastPage(documentSnapshot[documentSnapshot.length - 1]);
-
-  //     const data: TAddLetterProps[] = documentSnapshot.map((doc: any) => {
-  //       const docData = doc.data();
-  //       return {
-  //         letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
-  //         createAt: docData.createAt,
-  //         displayName: docData.displayName,
-  //         userUid: docData.userUid,
-  //         letterTitle: docData.letterTitle,
-  //         letterContent: docData.letterContent,
-  //         letterCategory: docData.letterCategory,
-  //         letterIsOpen: docData.letterIsOpen,
-  //         selectDate: docData.selectDate,
-  //       };
-  //     });
-
-  //     return data;
-
-  //     // return getNextLetters(sort, undefined);
-  //   },
-  //   initialPageParam: `${Query<DocumentData>}`,
-  //   getNextPageParam: (lastPage) => {
-  //     console.log("마지막 페이지", lastPage);
-  //     // console.log(
-  //     //   "마지막 페이지 아이디",
-  //     //   lastPage[lastPage.length - 1].letterId,
-  //     // );
-  //     // console.log(lastPage);
-  //     return lastPage.length > 0
-  //       ? lastPage[lastPage.length - 1].letterId
-  //       : // undefined가 되어야 NextPageParam 이 false
-  //         null;
-  //   },
-  // });
-
-  // isError && <div>에러</div>;
 
   const handleClickSort = (sortValue: string) => {
     switch (sortValue) {
@@ -180,7 +80,7 @@ const MainPages = () => {
         queryClient.invalidateQueries({ queryKey: [queryKeys.LETTERS] });
         break;
       default:
-        console.log("존재하지 않는 정렬입니다!");
+        alert("존재하지 않는 정렬입니다!");
     }
   };
 
@@ -195,15 +95,9 @@ const MainPages = () => {
         alert("작성자만 편지를 열람할 수 있습니다!");
         break;
       default:
-        console.log("접근권한이 없습니다. 관리자에게 문의하세요.");
+        alert("접근권한이 없습니다. 관리자에게 문의하세요.");
     }
   };
-
-  // if (isLoading) {
-  //   return <div>로딩중</div>;
-  // }
-
-  // console.log("data", data?.pages);
 
   return (
     <SMainWrapper>
@@ -235,13 +129,6 @@ const MainPages = () => {
                   onClick={() => handleClickGoToDetail(letter)}
                 >
                   {letter.letterIsOpen ? (
-                    // <ul>
-                    //   <li>제목: {letter.letterTitle}</li>
-                    //   <li>날짜: {letter.createAt}</li>
-                    //   <li>태그: </li>
-                    //   <li>좋아요: </li>
-                    //   <li></li>
-                    // </ul>
                     <>
                       <SLetterInforWrapper>
                         <STitleAndDayWrapper>
@@ -298,8 +185,6 @@ export default MainPages;
 
 const SMainWrapper = styled.div`
   font-size: 2.5rem;
-  /* border: 1px solid black; */
-  /* margin: 0 auto 5rem auto; */
 `;
 
 const SFilterLocationWrapper = styled.div`
@@ -334,7 +219,6 @@ const SLetterListWrapper = styled.div`
 
 const SLetterList = styled.ul`
   width: 630px;
-  /* height: 435px; */
   padding: 30px;
   border-radius: 30px;
   background-color: #fff;
@@ -423,6 +307,5 @@ const SMainSentenceWrapper = styled.div`
     margin-bottom: 100px;
   }
 
-  /* border: 1px solid black; */
   margin: 0 auto 5rem auto;
 `;

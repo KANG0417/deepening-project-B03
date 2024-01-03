@@ -77,14 +77,12 @@ const LetterDetailPage = () => {
 export default LetterDetailPage;
 
 const SContainer = styled.div`
-  /* border: solid 3px black; */
   gap: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* height: 700px; */
   margin-top: 40px;
   margin-bottom: 40px;
 `;
@@ -98,7 +96,6 @@ const SContentsWrapper = styled.div`
   height: 798px;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
 `;
 
 const SContentsLocalWrapper = styled.div`
@@ -107,7 +104,6 @@ const SContentsLocalWrapper = styled.div`
   flex-direction: column;
   margin-top: 120px;
   align-items: center;
-  /* background-color: red; */
 `;
 
 const SBackButton = styled.button`
@@ -157,7 +153,6 @@ const SDateWrapper = styled.ul`
   }
 `;
 const SLetterContent = styled.div`
-  /* border: 2px solid purple; */
   width: 500px;
   height: 250px;
   display: flex;
