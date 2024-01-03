@@ -62,7 +62,7 @@ const MainPages = () => {
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      return lastPage.length > 2
+      return lastPage.length < 2
         ? lastPage[lastPage.length - 1].letterId
         : // undefined가 되어야 NextPageParam 이 false
           undefined;
