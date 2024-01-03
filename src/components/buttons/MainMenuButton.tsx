@@ -1,13 +1,13 @@
 import styled, { css, keyframes } from "styled-components";
 import { TMenuButtonProps } from "../../types/header";
 
-const MenuButton = (props: TMenuButtonProps) => {
+const MainMenuButton = (props: TMenuButtonProps) => {
   const { type, addStyle = {}, onClick } = props;
 
-  return <SMenuButton type={type} $addStyle={addStyle} onClick={onClick} />;
+  return <SMainMenuButton type={type} $addStyle={addStyle} onClick={onClick} />;
 };
 
-export default MenuButton;
+export default MainMenuButton;
 
 const jelly = keyframes`
   	from,to {
@@ -28,7 +28,7 @@ const jelly = keyframes`
 	}
 `;
 
-const SMenuButton = styled.button<any>`
+const SMainMenuButton = styled.button<any>`
   background-color: var(--button-background);
   width: 32px;
   height: 32px;

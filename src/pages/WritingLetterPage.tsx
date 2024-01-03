@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 // import OptionBox from "../components/writingLetter/OptionBox";
-import LetterContent from "../components/writingLetter/LetterContent";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addLetter } from "../api/letterList";
 import { queryKeys } from "../query/keys.Constans";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.config";
+import LetterOption from "../components/writingLetter/LetterOption";
+import LetterEditer from "../components/writingLetter/LetterEditer";
 
 const WritingLetterPage = () => {
   const [tags, setTags] = useState<string[]>([
@@ -19,10 +20,10 @@ const WritingLetterPage = () => {
   const [letterIsOpen, setLetterIsOpen] = useState<boolean>(true);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [letterContent, setLetterContent] = useState("");
+  const [letterContent, setLetterContent] = useState<string>("");
+  const [letterTitle, setLetterTitle] = useState<string>("");
 
-  const CURRENT_DATE = dayjs().format("YYYY년MM월DD일 HH:MM:SS");
-  console.log(auth);
+  const current_date = dayjs().format("YYYY년MM월DD일 hh:mm:ss");
   const currentTimestamp = dayjs().valueOf();
 
   const queryClient = useQueryClient();
@@ -31,8 +32,10 @@ const WritingLetterPage = () => {
   const addTodoMutation = useMutation({
     mutationFn: addLetter,
     onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [queryKeys.LETTERS],
+      });
       alert("편지가 등록되었습니다!");
-      await queryClient.invalidateQueries({ queryKey: [queryKeys.LETTERS] });
       navigate("/");
     },
     onError: (error) => {
@@ -44,6 +47,10 @@ const WritingLetterPage = () => {
     e,
   ) => {
     e.preventDefault();
+    if (letterTitle?.trim() === "") {
+      alert("제목을 입력해주세요!");
+      return false;
+    }
 
     if (letterContent?.trim() === "") {
       alert("내용을 입력해주세요!");
@@ -51,13 +58,12 @@ const WritingLetterPage = () => {
     }
 
     const newLetter = {
-      // tags: selectedTag ? [selectedTag] : [],
-      // isSendImmediate,
+      isSendImmediate: isSendImmediate,
       letterContent: letterContent,
-      createAt: CURRENT_DATE,
-      displayName: "테스트",
-      userUid: "테스트",
-      letterTitle: "테스트",
+      createAt: current_date,
+      displayName: auth.currentUser?.displayName,
+      userUid: auth.currentUser?.uid,
+      letterTitle,
       letterCategory: selectedTag ? `${selectedTag}` : "",
       letterIsOpen,
       selectDate: `${selectedDate}`,
@@ -68,27 +74,61 @@ const WritingLetterPage = () => {
 
   return (
     <>
-      <SWritingFormContainer onSubmit={handleClickSubmitLetter}>
-        <LetterContent setLetterContent={setLetterContent} />
-        {/* <OptionBox /> */}
+      <SLetterEditWrapper onSubmit={handleClickSubmitLetter}>
+        <SLetterEditContainer>
+          <LetterEditer
+            setLetterTitle={setLetterTitle}
+            letterTitle={letterTitle}
+            setLetterContent={setLetterContent}
+          />
+        </SLetterEditContainer>
+        <LetterOption
+          tags={tags}
+          letterIsOpen={letterIsOpen}
+          isSendImmediate={isSendImmediate}
+          setIsSendImmediate={setIsSendImmediate}
+          setSelectedDate={setSelectedDate}
+          setSelectedTag={setSelectedTag}
+          setLetterIsOpen={setLetterIsOpen}
+          selectedTag={selectedTag}
+        />
         <SSubmitLetterButton type="submit">편지 보내기</SSubmitLetterButton>
-      </SWritingFormContainer>
+      </SLetterEditWrapper>
     </>
   );
 };
 
-const SWritingFormContainer = styled.form`
+const SLetterEditWrapper = styled.form`
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 20px;
-  width: 75%;
+  width: 80%;
   height: 90%;
   margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  gap: 10vw;
 `;
 
-const SSubmitLetterButton = styled.button``;
+const SLetterEditContainer = styled.div`
+  padding: 20px;
+  width: 80%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+`;
+
+const SSubmitLetterButton = styled.button`
+  position: absolute;
+  border: 2px solid #90c3ff;
+  border-radius: 15px;
+  margin: 23vw 0 0 63vw;
+  width: 10vw;
+  height: 5vh;
+  &:hover {
+    background-color: #90c3ff;
+    color: #fff;
+  }
+`;
 
 export default WritingLetterPage;

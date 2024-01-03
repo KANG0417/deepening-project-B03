@@ -1,23 +1,21 @@
 import React, {
   BrowserRouter,
   Navigate,
-  Outlet,
   Route,
   Routes,
-  useNavigate,
 } from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyle";
 import GlobalColor from "./styles/GlobalColor";
 import GlobalFont from "./styles/GlobalFont";
-import LayoutPage from "../pages/LayoutPage";
+import UserLayout from "../components/layouts/UserLayout";
 import LoginPage from "../pages/LoginPage";
 import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
-import MyPage from "../pages/MyPage";
 import LetterDetailPage from "../pages/LetterDetailPage";
 import WritingLetterPage from "../pages/WritingLetterPage";
 import { User } from "firebase/auth";
-import { ReactNode } from "react";
+import PublicLayout from "../components/layouts/PublicLayout";
+import MyPage from "../pages/MyPage";
 
 const Router = ({ user }: { user: User | null }) => {
   return (
@@ -28,11 +26,12 @@ const Router = ({ user }: { user: User | null }) => {
       <BrowserRouter>
         {user ? (
           <Routes>
-            <Route element={<LayoutPage />}>
+            <Route element={<UserLayout />}>
               <Route path="/" element={<MainPage />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/writingLetter" element={<WritingLetterPage />} />
               <Route path="/letterDetail" element={<LetterDetailPage />} />
+              <Route path="/letterDetail/:id" element={<LetterDetailPage />} />
               <Route path="*" element={<Navigate to={"/"} replace />} />
             </Route>
           </Routes>
@@ -49,17 +48,5 @@ const Router = ({ user }: { user: User | null }) => {
     </>
   );
 };
-
-function PublicLayout({ user }: { user: User | null }) {
-  const navigate = useNavigate();
-
-  if (user) {
-    navigate("/");
-
-    return null;
-  }
-
-  return <Outlet />;
-}
 
 export default Router;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MenuButton from "../button/MenuButton";
+import MainMenuButton from "../buttons/MainMenuButton";
 import WriteIcon from "../../assets/icons/writingIcon.png";
 import { useNavigate } from "react-router-dom";
 import UserMenuDropDown from "../dropDownList";
@@ -22,7 +22,7 @@ const Header = () => {
         <SHeaderTitle onClick={handleGoToHomeClick}></SHeaderTitle>
         <SMenuBar>
           <li>
-            <MenuButton
+            <MainMenuButton
               type={"button"}
               addStyle={{ backgroundImage: `url(${WriteIcon})` }}
               onClick={handleWriteMoveClick}

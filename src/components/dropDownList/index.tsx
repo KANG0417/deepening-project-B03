@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import MenuButton from "../button/MenuButton";
 import UserIcon from "../../assets/icons/userIcon.png";
 import topChvronIcon from "../../assets/icons/topChevronIcon.png";
 import bottomChvronIcon from "../../assets/icons/bottomChevronIcon.png";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase.config";
+import MainMenuButton from "../buttons/MainMenuButton";
 
 const MYPAGE = "마이페이지";
 const LOGOUT = "로그아웃";
@@ -27,7 +27,6 @@ const UserMenuDropDown = () => {
         dropMenuRef.current &&
         !dropMenuRef.current.contains(event.target)
       ) {
-        console.log(event.target, event.currentTarget, dropMenuRef.current);
         setIsExpanded(false);
       }
     };
@@ -58,7 +57,7 @@ const UserMenuDropDown = () => {
   return (
     <>
       <SMenuContainer onClick={handleDropDownClick} ref={dropMenuRef}>
-        <MenuButton
+        <MainMenuButton
           type={"button"}
           addStyle={{ backgroundImage: `url(${UserIcon})` }}
         />

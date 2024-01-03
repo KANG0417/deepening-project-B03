@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { TWritingProps } from "../../types/letter";
 
-interface CalendarProps {
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
-}
-
-const Calendar: React.FC<CalendarProps> = ({ setSelectedDate }) => {
+const Calendar = ({ setSelectedDate }: TWritingProps) => {
   const [selectedDate, setSelectedDateLocal] = useState<Date | null>(
     new Date(),
   );
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDateLocal(date);
-    setSelectedDate(date); // 부모 컴포넌트로 선택된 날짜 전달
+    if (setSelectedDate !== null && setSelectedDate !== undefined) {
+      setSelectedDate(date); // 부모 컴포넌트로 선택된 날짜 전달
+    }
   };
 
   return (

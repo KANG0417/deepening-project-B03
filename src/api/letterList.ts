@@ -1,4 +1,5 @@
 import {
+  DocumentReference,
   DocumentData,
   OrderByDirection,
   Query,
@@ -30,6 +31,29 @@ export const getFirstLetters = async (
   const q = query(letterRef, orderBy("createAt", letterSort), limit(5));
 
   const querySnapshot = await getDocs(q);
+  // return querySnapshot;
+  const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
+    const docData = doc.data();
+    return {
+      letterId: doc.id, // 예시로 추가. Firestore 문서 ID가 필요한 경우
+      createAt: docData.createAt,
+      displayName: docData.displayName,
+      userUid: docData.userUid,
+      letterTitle: docData.letterTitle,
+      letterContent: docData.letterContent,
+      letterCategory: docData.letterCategory,
+      letterIsOpen: docData.letterIsOpen,
+      selectDate: docData.selectDate,
+    };
+  });
+
+  return data;
+};
+
+export const getLetters = async () => {
+  const letterRef = collection(db, "letters");
+
+  const querySnapshot = await getDocs(letterRef);
   // return querySnapshot;
   const data: TAddLetterProps[] = querySnapshot.docs.map((doc) => {
     const docData = doc.data();
@@ -110,9 +134,31 @@ export const getNextLetters = async (
 
 // export const documentSnapshot = getNextLetters();
 
-export const getLetter = async (id: string) => {
-  const querySnapshot = await getDoc(doc(db, "letters", id));
-  return querySnapshot.data();
+export const getLetter = async (id: string | undefined) => {
+  if (!id) {
+    // id가 정의되지 않은 경우에 대한 처리
+    console.error("ID is undefined");
+    return null;
+  }
+
+  const docRef: DocumentReference<DocumentData> = doc(db, "letters", id);
+  try {
+    const querySnapshot = await getDoc(docRef);
+    console.log(querySnapshot);
+
+    if (querySnapshot.exists()) {
+      return querySnapshot.data();
+    } else {
+      console.error("Document does not exist");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+    return null;
+  }
+  // const querySnapshot = await getDoc(docRef);
+  // console.log(querySnapshot);
+  // return querySnapshot.data();
 };
 
 export const updateLetter = async (
