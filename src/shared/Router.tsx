@@ -1,33 +1,49 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyle";
 import GlobalColor from "./styles/GlobalColor";
 import GlobalFont from "./styles/GlobalFont";
-import LayoutPage from "../pages/LayoutPage";
+import UserLayout from "../components/layouts/UserLayout";
 import LoginPage from "../pages/LoginPage";
 import JoinPage from "../pages/JoinPage";
 import MainPage from "../pages/MainPage";
-import MyPage from "../pages/MyPage";
 import LetterDetailPage from "../pages/LetterDetailPage";
-import WritingLetter from "../pages/WritingLetter";
+import WritingLetterPage from "../pages/WritingLetterPage";
+import { User } from "firebase/auth";
+import PublicLayout from "../components/layouts/PublicLayout";
+import MyPage from "../pages/MyPage";
 
-const Router = () => {
+const Router = ({ user }: { user: User | null }) => {
   return (
     <>
       <GlobalStyle />
       <GlobalColor />
       <GlobalFont />
       <BrowserRouter>
-        <Routes>
-          <Route element={<LayoutPage />}>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/writingLetter" element={<WritingLetter />} />
-            <Route path="/letterDetail" element={<LetterDetailPage />} />
-          </Route>
-          {/* ReadLetterPage : 임시경로 */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/join" element={<JoinPage />} />
-        </Routes>
+        {user ? (
+          <Routes>
+            <Route element={<UserLayout />}>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/writingLetter" element={<WritingLetterPage />} />
+              <Route path="/letterDetail" element={<LetterDetailPage />} />
+              <Route path="/letterDetail/:id" element={<LetterDetailPage />} />
+              <Route path="*" element={<Navigate to={"/"} replace />} />
+            </Route>
+          </Routes>
+        ) : (
+          <Routes>
+            <Route element={<PublicLayout user={user} />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/join" element={<JoinPage />} />
+              <Route path="*" element={<Navigate to={"login"} replace />} />
+            </Route>
+          </Routes>
+        )}
       </BrowserRouter>
     </>
   );

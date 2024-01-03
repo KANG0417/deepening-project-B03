@@ -1,7 +1,6 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import {
   signInWithEmailAndPassword,
-  getAuth,
   GoogleAuthProvider,
   GithubAuthProvider,
   signInWithPopup,
@@ -9,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.config";
 import styled from "styled-components";
-import logo from "../assets/logos/logo.png";
+import fullLogo from "../assets/logos/fullLogo.png";
 import googleLogo from "../assets/logos/googleLogo.png";
 import githubLogo from "../assets/logos/githubLogo.png";
 
@@ -18,19 +17,8 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const [displayNameError, setDisplayNameError] = useState<string>("");
-
-  // const auth = getAuth();
-  const user = auth.currentUser;
-
-  useEffect(() => {
-    if (user !== null) {
-      setDisplayName(user.displayName || null);
-    }
-  }, [user]);
 
   const handleClickOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -84,9 +72,8 @@ const LoginPage = () => {
         email,
         password,
       );
-      console.log(userCredential);
-      console.log("로그인완료");
-      alert(`${displayName}님 안녕하세요`);
+
+      alert(`${userCredential.user.displayName}님 안녕하세요`);
       navigate("/");
     } catch (error) {
       alert("로그인에 실패했습니다");
@@ -103,10 +90,7 @@ const LoginPage = () => {
         const token = credential.accessToken;
         const userName = res.user.displayName;
 
-        // local storage에 token, username 저장해주기
-        console.log(token);
-        console.log(userName);
-
+        alert(`${userName}님 환영합니다!`);
         navigate("/");
       })
       .catch((error) => {
@@ -129,9 +113,7 @@ const LoginPage = () => {
         const token = credential.accessToken;
         const userName = res.user.displayName;
 
-        // local storage에 token, username 저장해주기
-        console.log(token);
-        console.log(userName);
+        alert(`${userName}님 환영합니다!`);
 
         navigate("/");
       })
@@ -147,11 +129,7 @@ const LoginPage = () => {
 
   return (
     <SLoginPageWrapper>
-      <SLoginPageLogo
-        onClick={() => {
-          navigate("/");
-        }}
-      />
+      <SLoginPageLogo />
       <SLoginPageSecondWrapper>
         <SLoginPageTitle>로그인</SLoginPageTitle>
         <SLoginPageForm>
@@ -235,15 +213,14 @@ const SLoginPageSecondWrapper = styled.div`
 `;
 
 const SLoginPageLogo = styled.div`
-  background-image: url(${logo});
+  background-image: url(${fullLogo});
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: 150px;
-  height: 60px;
+  width: 418px;
+  height: 61px;
   flex-shrink: 0;
   margin: 30px;
-  cursor: pointer;
 `;
 
 const SLoginPageTitle = styled.h2`

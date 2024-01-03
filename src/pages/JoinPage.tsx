@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styled from "styled-components";
-import logo from "../assets/logos/logo.png";
+import fullLogo from "../assets/logos/fullLogo.png";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -76,7 +76,6 @@ const JoinPage = () => {
 
   const handleClickSignUp = async (event: FormEvent) => {
     event.preventDefault();
-    console.log("test");
     const nowDate = dayjs().format("YY년 MM월 DD일 HH:mm:ss");
 
     // 이메일 중복 확인
@@ -84,15 +83,11 @@ const JoinPage = () => {
       collection(db, "users"),
       where("email", "==", email),
     );
-    console.log("emailQuery", emailQuery);
 
     const emailSnapshot = await getDocs(emailQuery);
-    console.log("emailSnapshot", emailSnapshot.docs);
-    console.log("이거이거", emailSnapshot.empty);
 
     if (!emailSnapshot.empty) {
       alert("이미 사용 중인 이메일입니다");
-      console.log("사용중임");
       window.location.reload();
       return false;
     } else {
@@ -145,11 +140,7 @@ const JoinPage = () => {
 
   return (
     <SJoinPageWrapper>
-      <SJoinPageLogo
-        onClick={() => {
-          navigate("/");
-        }}
-      />
+      <SJoinPageLogo />
       <SJoinPageSecondWrapper>
         <SJoinPageTitle>회원가입</SJoinPageTitle>
         <SJoinPageForm>
@@ -236,15 +227,14 @@ const SJoinPageSecondWrapper = styled.div`
 `;
 
 const SJoinPageLogo = styled.div`
-  background-image: url(${logo});
+  background-image: url(${fullLogo});
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: 150px;
-  height: 60px;
+  width: 418px;
+  height: 61px;
   flex-shrink: 0;
   margin: 30px;
-  cursor: pointer;
 `;
 
 const SJoinPageTitle = styled.h2`

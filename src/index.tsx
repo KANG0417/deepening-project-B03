@@ -4,23 +4,27 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Provider } from "react-redux";
+import store from "./redux/config/configStore";
 
 const queryClicent = new QueryClient({
   defaultOptions: {
     queries: {},
   },
 });
-// let persistor = persi;
 
+// let persistor = persi;
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClicent}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <App />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClicent}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <App />
+      </QueryClientProvider>
+    </Provider>
   </React.StrictMode>,
 );
 
