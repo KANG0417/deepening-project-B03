@@ -307,7 +307,8 @@ const SFilterWrapper = styled.div`
     font-size: 18px;
   }
   button {
-    color: #e5e5e5;
+    color: #a2a2a2;
+    font-size: 16px;
   }
 `;
 

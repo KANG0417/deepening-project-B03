@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.config";
 import styled from "styled-components";
-import logo from "../assets/logos/logo.png";
+import fullLogo from "../assets/logos/fullLogo.png";
 import googleLogo from "../assets/logos/googleLogo.png";
 import githubLogo from "../assets/logos/githubLogo.png";
 
@@ -147,11 +147,7 @@ const LoginPage = () => {
 
   return (
     <SLoginPageWrapper>
-      <SLoginPageLogo
-        onClick={() => {
-          navigate("/");
-        }}
-      />
+      <SLoginPageLogo />
       <SLoginPageSecondWrapper>
         <SLoginPageTitle>로그인</SLoginPageTitle>
         <SLoginPageForm>
@@ -235,15 +231,14 @@ const SLoginPageSecondWrapper = styled.div`
 `;
 
 const SLoginPageLogo = styled.div`
-  background-image: url(${logo});
+  background-image: url(${fullLogo});
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: 150px;
-  height: 60px;
+  width: 418px;
+  height: 61px;
   flex-shrink: 0;
   margin: 30px;
-  cursor: pointer;
 `;
 
 const SLoginPageTitle = styled.h2`
