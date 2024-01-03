@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import MenuButton from "../buttons/MenuButton";
 import UserIcon from "../../assets/icons/userIcon.png";
 import topChvronIcon from "../../assets/icons/topChevronIcon.png";
 import bottomChvronIcon from "../../assets/icons/bottomChevronIcon.png";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase.config";
+import MainMenuButton from "../buttons/MainMenuButton";
 
 const MYPAGE = "마이페이지";
 const LOGOUT = "로그아웃";
@@ -27,7 +27,6 @@ const UserMenuDropDown = () => {
         dropMenuRef.current &&
         !dropMenuRef.current.contains(event.target)
       ) {
-        console.log(event.target, event.currentTarget, dropMenuRef.current);
         setIsExpanded(false);
       }
     };
@@ -40,7 +39,15 @@ const UserMenuDropDown = () => {
       case MYPAGE:
         return navigate("/mypage");
       case LOGOUT:
-        return navigate("/login");
+        try {
+          await auth.signOut();
+          // 성공적으로 로그아웃했을 때의 추가 동작을 수행할 수 있습니다.
+        } catch (error: unknown) {
+          // 로그아웃 중에 발생한 오류를 처리합니다.
+          if (error instanceof Error)
+            console.error("로그아웃 오류:", error.message);
+        }
+        break;
       default:
         alert("관리자에게 문의하세요");
         break;
@@ -50,7 +57,7 @@ const UserMenuDropDown = () => {
   return (
     <>
       <SMenuContainer onClick={handleDropDownClick} ref={dropMenuRef}>
-        <MenuButton
+        <MainMenuButton
           type={"button"}
           addStyle={{ backgroundImage: `url(${UserIcon})` }}
         />

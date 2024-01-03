@@ -1,22 +1,23 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import Router from "./shared/Router";
-import { useEffect } from "react";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebase.config";
 
 function App() {
-  const auth = getAuth();
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        localStorage.setItem("user", JSON.stringify(user.uid));
-      } else {
-        localStorage.removeItem("user");
-        // window.location.href = "http://localhost:3000/login";
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setIsAuthInitialized(true);
     });
+    return () => unsubscribe();
   }, []);
 
-  return <Router />;
+  if (!isAuthInitialized) return null;
+
+  return <Router user={user} />;
 }
 
 export default App;

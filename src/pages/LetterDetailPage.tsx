@@ -3,8 +3,22 @@ import styled from "styled-components";
 import LetterCommentList from "../components/comment/LetterCommentList";
 import CommentForm from "../components/comment/CommentForm";
 import detailNote from "../assets/notes/detailNote.png";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "../query/keys.Constans";
+import { getLetter } from "../api/letterList";
 
 const LetterDetailPage = () => {
+  const [like, setLike] = useState<number>(0);
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  const { data } = useQuery({
+    queryKey: [queryKeys.LETTERS],
+    queryFn: () => getLetter(id),
+  });
+
   const handleClickCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -13,10 +27,13 @@ const LetterDetailPage = () => {
       alert("복사에 실패하였습니다");
     }
   };
-  const [like, setLike] = useState<number>(0);
 
   const handleClickLikeUp = () => {
     setLike(like + 1);
+  };
+
+  const handleClickGoToList = () => {
+    navigate("/");
   };
 
   return (
@@ -24,21 +41,16 @@ const LetterDetailPage = () => {
       <SContentsWrapper>
         <SContentsLocalWrapper>
           <SBackButtonWrapper>
-            <SBackButton>목록으로</SBackButton>
+            <SBackButton onClick={handleClickGoToList}>목록으로</SBackButton>
           </SBackButtonWrapper>
           <SDate>여행한시간 - 10년</SDate>
-          <SLetterTitle>2013년 12월로부터 온 편지</SLetterTitle>
+          <SLetterTitle>{data?.letterTitle}</SLetterTitle>
           <SDateWrapper>
             <li>2013년 12월26일</li>
             <li>▶</li>
             <li>2023년 12월31일</li>
           </SDateWrapper>
-          <SLetterContent>
-            10년뒤 안나에게 어쩌구저쩌구 내용들 10년뒤 안나에게 어쩌구저쩌구
-            내용들 10년뒤 안나에게 어쩌구저쩌구 내용들 10년뒤 안나에게
-            어쩌구저쩌구 내용들 10년뒤 안나에게 어쩌구저쩌구 내용들 10년뒤
-            안나에게 어쩌구저쩌구 내용들 10년뒤 안나에게 어쩌구저쩌구 내용들
-          </SLetterContent>
+          <SLetterContent>{data?.letterContent}</SLetterContent>
           <SLineAndButtonWrapper>
             <SDividingLine />
             <SLikeCommentShareWrapper>
