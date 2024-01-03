@@ -62,7 +62,7 @@ const MainPages = () => {
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      return lastPage.length < 2
+      return lastPage.length !== 2
         ? lastPage[lastPage.length - 1].letterId
         : // undefined가 되어야 NextPageParam 이 false
           undefined;
@@ -83,8 +83,6 @@ const MainPages = () => {
         alert("존재하지 않는 정렬입니다!");
     }
   };
-
-  console.log(auth.currentUser?.uid);
 
   const handleClickGoToDetail = (letter: TAddLetterProps) => {
     switch (letter.letterIsOpen || letter.letterId === auth.currentUser?.uid) {
